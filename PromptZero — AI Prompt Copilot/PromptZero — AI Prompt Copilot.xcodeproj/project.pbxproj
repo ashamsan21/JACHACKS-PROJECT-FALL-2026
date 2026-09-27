@@ -1,0 +1,931 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9659F768306967DA00B30DA9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9659F767306967DA00B30DA9 /* AppDelegate.swift */; };
+		9659F76A306967DA00B30DA9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9659F769306967DA00B30DA9 /* SceneDelegate.swift */; };
+		9659F76D306967DA00B30DA9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9659F76B306967DA00B30DA9 /* LaunchScreen.storyboard */; };
+		9659F770306967DA00B30DA9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9659F76E306967DA00B30DA9 /* Main.storyboard */; };
+		9659F779306967DA00B30DA9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9659F778306967DA00B30DA9 /* AppDelegate.swift */; };
+		9659F77C306967DA00B30DA9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9659F77A306967DA00B30DA9 /* Main.storyboard */; };
+		9659F783306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9659F782306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9659F78D306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9659F78C306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9659F792306967DA00B30DA9 /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 9659F757306967D900B30DA9 /* Main.html */; };
+		9659F793306967DA00B30DA9 /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 9659F757306967D900B30DA9 /* Main.html */; };
+		9659F794306967DA00B30DA9 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9659F759306967D900B30DA9 /* Icon.png */; };
+		9659F795306967DA00B30DA9 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9659F759306967D900B30DA9 /* Icon.png */; };
+		9659F796306967DA00B30DA9 /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 9659F75A306967D900B30DA9 /* Style.css */; };
+		9659F797306967DA00B30DA9 /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 9659F75A306967D900B30DA9 /* Style.css */; };
+		9659F798306967DA00B30DA9 /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = 9659F75B306967D900B30DA9 /* Script.js */; };
+		9659F799306967DA00B30DA9 /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = 9659F75B306967D900B30DA9 /* Script.js */; };
+		9659F79A306967DA00B30DA9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9659F75C306967D900B30DA9 /* ViewController.swift */; };
+		9659F79B306967DA00B30DA9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9659F75C306967D900B30DA9 /* ViewController.swift */; };
+		9659F79C306967DA00B30DA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9659F75D306967DA00B30DA9 /* Assets.xcassets */; };
+		9659F79D306967DA00B30DA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9659F75D306967DA00B30DA9 /* Assets.xcassets */; };
+		9659F79E306967DA00B30DA9 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9659F75F306967DA00B30DA9 /* SafariWebExtensionHandler.swift */; };
+		9659F79F306967DA00B30DA9 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9659F75F306967DA00B30DA9 /* SafariWebExtensionHandler.swift */; };
+		9659F7B4306967DA00B30DA9 /* worker.js in Resources */ = {isa = PBXBuildFile; fileRef = 9659F7B1306967DA00B30DA9 /* worker.js */; };
+		9659F7B5306967DA00B30DA9 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 9659F7B2306967DA00B30DA9 /* manifest.json */; };
+		9659F7B6306967DA00B30DA9 /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = 9659F7B3306967DA00B30DA9 /* content.js */; };
+		9659F7B7306967DA00B30DA9 /* worker.js in Resources */ = {isa = PBXBuildFile; fileRef = 9659F7B1306967DA00B30DA9 /* worker.js */; };
+		9659F7B8306967DA00B30DA9 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 9659F7B2306967DA00B30DA9 /* manifest.json */; };
+		9659F7B9306967DA00B30DA9 /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = 9659F7B3306967DA00B30DA9 /* content.js */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9659F784306967DA00B30DA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9659F751306967D900B30DA9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9659F781306967DA00B30DA9;
+			remoteInfo = "PromptZero — AI Prompt Copilot Extension (iOS)";
+		};
+		9659F78E306967DA00B30DA9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9659F751306967D900B30DA9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9659F78B306967DA00B30DA9;
+			remoteInfo = "PromptZero — AI Prompt Copilot Extension (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9659F7A5306967DA00B30DA9 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				9659F783306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+		9659F7AC306967DA00B30DA9 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				9659F78D306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		9659F758306967D900B30DA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		9659F759306967D900B30DA9 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		9659F75A306967D900B30DA9 /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		9659F75B306967D900B30DA9 /* Script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Script.js; sourceTree = "<group>"; };
+		9659F75C306967D900B30DA9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9659F75D306967DA00B30DA9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9659F75F306967DA00B30DA9 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		9659F764306967DA00B30DA9 /* PromptZero — AI Prompt Copilot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PromptZero — AI Prompt Copilot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9659F767306967DA00B30DA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9659F769306967DA00B30DA9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		9659F76C306967DA00B30DA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9659F76F306967DA00B30DA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9659F771306967DA00B30DA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9659F776306967DA00B30DA9 /* PromptZero — AI Prompt Copilot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PromptZero — AI Prompt Copilot.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9659F778306967DA00B30DA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9659F77B306967DA00B30DA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9659F77D306967DA00B30DA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9659F782306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "PromptZero — AI Prompt Copilot Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9659F787306967DA00B30DA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9659F78C306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "PromptZero — AI Prompt Copilot Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9659F791306967DA00B30DA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9659F7B1306967DA00B30DA9 /* worker.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = worker.js; path = ../../extension/worker.js; sourceTree = "<group>"; };
+		9659F7B2306967DA00B30DA9 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../extension/manifest.json; sourceTree = "<group>"; };
+		9659F7B3306967DA00B30DA9 /* content.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = content.js; path = ../../extension/content.js; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9659F761306967DA00B30DA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		9659F773306967DA00B30DA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		9659F77F306967DA00B30DA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		9659F789306967DA00B30DA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9659F750306967D900B30DA9 = {
+			isa = PBXGroup;
+			children = (
+				9659F755306967D900B30DA9 /* Shared (App) */,
+				9659F75E306967DA00B30DA9 /* Shared (Extension) */,
+				9659F766306967DA00B30DA9 /* iOS (App) */,
+				9659F777306967DA00B30DA9 /* macOS (App) */,
+				9659F786306967DA00B30DA9 /* iOS (Extension) */,
+				9659F790306967DA00B30DA9 /* macOS (Extension) */,
+				9659F765306967DA00B30DA9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9659F755306967D900B30DA9 /* Shared (App) */ = {
+			isa = PBXGroup;
+			children = (
+				9659F75C306967D900B30DA9 /* ViewController.swift */,
+				9659F75D306967DA00B30DA9 /* Assets.xcassets */,
+				9659F756306967D900B30DA9 /* Resources */,
+			);
+			path = "Shared (App)";
+			sourceTree = "<group>";
+		};
+		9659F756306967D900B30DA9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9659F757306967D900B30DA9 /* Main.html */,
+				9659F759306967D900B30DA9 /* Icon.png */,
+				9659F75A306967D900B30DA9 /* Style.css */,
+				9659F75B306967D900B30DA9 /* Script.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9659F75E306967DA00B30DA9 /* Shared (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				9659F7B0306967DA00B30DA9 /* Resources */,
+				9659F75F306967DA00B30DA9 /* SafariWebExtensionHandler.swift */,
+			);
+			path = "Shared (Extension)";
+			sourceTree = "<group>";
+		};
+		9659F765306967DA00B30DA9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9659F764306967DA00B30DA9 /* PromptZero — AI Prompt Copilot.app */,
+				9659F776306967DA00B30DA9 /* PromptZero — AI Prompt Copilot.app */,
+				9659F782306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex */,
+				9659F78C306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9659F766306967DA00B30DA9 /* iOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				9659F767306967DA00B30DA9 /* AppDelegate.swift */,
+				9659F769306967DA00B30DA9 /* SceneDelegate.swift */,
+				9659F76B306967DA00B30DA9 /* LaunchScreen.storyboard */,
+				9659F76E306967DA00B30DA9 /* Main.storyboard */,
+				9659F771306967DA00B30DA9 /* Info.plist */,
+			);
+			path = "iOS (App)";
+			sourceTree = "<group>";
+		};
+		9659F777306967DA00B30DA9 /* macOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				9659F778306967DA00B30DA9 /* AppDelegate.swift */,
+				9659F77A306967DA00B30DA9 /* Main.storyboard */,
+				9659F77D306967DA00B30DA9 /* Info.plist */,
+			);
+			path = "macOS (App)";
+			sourceTree = "<group>";
+		};
+		9659F786306967DA00B30DA9 /* iOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				9659F787306967DA00B30DA9 /* Info.plist */,
+			);
+			path = "iOS (Extension)";
+			sourceTree = "<group>";
+		};
+		9659F790306967DA00B30DA9 /* macOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				9659F791306967DA00B30DA9 /* Info.plist */,
+			);
+			path = "macOS (Extension)";
+			sourceTree = "<group>";
+		};
+		9659F7B0306967DA00B30DA9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9659F7B1306967DA00B30DA9 /* worker.js */,
+				9659F7B2306967DA00B30DA9 /* manifest.json */,
+				9659F7B3306967DA00B30DA9 /* content.js */,
+			);
+			name = Resources;
+			path = "Shared (Extension)";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9659F763306967DA00B30DA9 /* PromptZero — AI Prompt Copilot (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9659F7A6306967DA00B30DA9 /* Build configuration list for PBXNativeTarget "PromptZero — AI Prompt Copilot (iOS)" */;
+			buildPhases = (
+				9659F760306967DA00B30DA9 /* Sources */,
+				9659F761306967DA00B30DA9 /* Frameworks */,
+				9659F762306967DA00B30DA9 /* Resources */,
+				9659F7A5306967DA00B30DA9 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9659F785306967DA00B30DA9 /* PBXTargetDependency */,
+			);
+			name = "PromptZero — AI Prompt Copilot (iOS)";
+			productName = "PromptZero — AI Prompt Copilot (iOS)";
+			productReference = 9659F764306967DA00B30DA9 /* PromptZero — AI Prompt Copilot.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9659F775306967DA00B30DA9 /* PromptZero — AI Prompt Copilot (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9659F7AD306967DA00B30DA9 /* Build configuration list for PBXNativeTarget "PromptZero — AI Prompt Copilot (macOS)" */;
+			buildPhases = (
+				9659F772306967DA00B30DA9 /* Sources */,
+				9659F773306967DA00B30DA9 /* Frameworks */,
+				9659F774306967DA00B30DA9 /* Resources */,
+				9659F7AC306967DA00B30DA9 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9659F78F306967DA00B30DA9 /* PBXTargetDependency */,
+			);
+			name = "PromptZero — AI Prompt Copilot (macOS)";
+			productName = "PromptZero — AI Prompt Copilot (macOS)";
+			productReference = 9659F776306967DA00B30DA9 /* PromptZero — AI Prompt Copilot.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9659F781306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9659F7A2306967DA00B30DA9 /* Build configuration list for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (iOS)" */;
+			buildPhases = (
+				9659F77E306967DA00B30DA9 /* Sources */,
+				9659F77F306967DA00B30DA9 /* Frameworks */,
+				9659F780306967DA00B30DA9 /* Resources */,
+			);
+			buildRules = (
+			);
+			name = "PromptZero — AI Prompt Copilot Extension (iOS)";
+			productName = "PromptZero — AI Prompt Copilot Extension (iOS)";
+			productReference = 9659F782306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		9659F78B306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9659F7A9306967DA00B30DA9 /* Build configuration list for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (macOS)" */;
+			buildPhases = (
+				9659F788306967DA00B30DA9 /* Sources */,
+				9659F789306967DA00B30DA9 /* Frameworks */,
+				9659F78A306967DA00B30DA9 /* Resources */,
+			);
+			buildRules = (
+			);
+			name = "PromptZero — AI Prompt Copilot Extension (macOS)";
+			productName = "PromptZero — AI Prompt Copilot Extension (macOS)";
+			productReference = 9659F78C306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9659F751306967D900B30DA9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					9659F763306967DA00B30DA9 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					9659F775306967DA00B30DA9 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					9659F781306967DA00B30DA9 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+					9659F78B306967DA00B30DA9 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = 9659F754306967D900B30DA9 /* Build configuration list for PBXProject "PromptZero — AI Prompt Copilot" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9659F750306967D900B30DA9;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9659F765306967DA00B30DA9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9659F763306967DA00B30DA9 /* PromptZero — AI Prompt Copilot (iOS) */,
+				9659F775306967DA00B30DA9 /* PromptZero — AI Prompt Copilot (macOS) */,
+				9659F781306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension (iOS) */,
+				9659F78B306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension (macOS) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9659F762306967DA00B30DA9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				9659F794306967DA00B30DA9 /* Icon.png in Resources */,
+				9659F76D306967DA00B30DA9 /* LaunchScreen.storyboard in Resources */,
+				9659F792306967DA00B30DA9 /* Main.html in Resources */,
+				9659F798306967DA00B30DA9 /* Script.js in Resources */,
+				9659F79C306967DA00B30DA9 /* Assets.xcassets in Resources */,
+				9659F770306967DA00B30DA9 /* Main.storyboard in Resources */,
+				9659F796306967DA00B30DA9 /* Style.css in Resources */,
+			);
+		};
+		9659F774306967DA00B30DA9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				9659F795306967DA00B30DA9 /* Icon.png in Resources */,
+				9659F797306967DA00B30DA9 /* Style.css in Resources */,
+				9659F77C306967DA00B30DA9 /* Main.storyboard in Resources */,
+				9659F799306967DA00B30DA9 /* Script.js in Resources */,
+				9659F79D306967DA00B30DA9 /* Assets.xcassets in Resources */,
+				9659F793306967DA00B30DA9 /* Main.html in Resources */,
+			);
+		};
+		9659F780306967DA00B30DA9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				9659F7B9306967DA00B30DA9 /* content.js in Resources */,
+				9659F7B8306967DA00B30DA9 /* manifest.json in Resources */,
+				9659F7B7306967DA00B30DA9 /* worker.js in Resources */,
+			);
+		};
+		9659F78A306967DA00B30DA9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				9659F7B6306967DA00B30DA9 /* content.js in Resources */,
+				9659F7B5306967DA00B30DA9 /* manifest.json in Resources */,
+				9659F7B4306967DA00B30DA9 /* worker.js in Resources */,
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9659F760306967DA00B30DA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				9659F79A306967DA00B30DA9 /* ViewController.swift in Sources */,
+				9659F768306967DA00B30DA9 /* AppDelegate.swift in Sources */,
+				9659F76A306967DA00B30DA9 /* SceneDelegate.swift in Sources */,
+			);
+		};
+		9659F772306967DA00B30DA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				9659F79B306967DA00B30DA9 /* ViewController.swift in Sources */,
+				9659F779306967DA00B30DA9 /* AppDelegate.swift in Sources */,
+			);
+		};
+		9659F77E306967DA00B30DA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				9659F79E306967DA00B30DA9 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+		};
+		9659F788306967DA00B30DA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				9659F79F306967DA00B30DA9 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9659F785306967DA00B30DA9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9659F781306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension (iOS) */;
+			targetProxy = 9659F784306967DA00B30DA9 /* PBXContainerItemProxy */;
+		};
+		9659F78F306967DA00B30DA9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9659F78B306967DA00B30DA9 /* PromptZero — AI Prompt Copilot Extension (macOS) */;
+			targetProxy = 9659F78E306967DA00B30DA9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9659F757306967D900B30DA9 /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9659F758306967D900B30DA9 /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		9659F76B306967DA00B30DA9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9659F76C306967DA00B30DA9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		9659F76E306967DA00B30DA9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9659F76F306967DA00B30DA9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		9659F77A306967DA00B30DA9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9659F77B306967DA00B30DA9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9659F7A0306967DA00B30DA9 /* Debug configuration for PBXProject "PromptZero — AI Prompt Copilot" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9659F7A1306967DA00B30DA9 /* Release configuration for PBXProject "PromptZero — AI Prompt Copilot" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		9659F7A3306967DA00B30DA9 /* Debug configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (iOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "PromptZero — AI Prompt Copilot Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourCompany.PromptZero---AI-Prompt-Copilot.Extension";
+				PRODUCT_NAME = "PromptZero — AI Prompt Copilot Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9659F7A4306967DA00B30DA9 /* Release configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (iOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "PromptZero — AI Prompt Copilot Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourCompany.PromptZero---AI-Prompt-Copilot.Extension";
+				PRODUCT_NAME = "PromptZero — AI Prompt Copilot Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9659F7A7306967DA00B30DA9 /* Debug configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot (iOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "PromptZero — AI Prompt Copilot";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourCompany.PromptZero---AI-Prompt-Copilot";
+				PRODUCT_NAME = "PromptZero — AI Prompt Copilot";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9659F7A8306967DA00B30DA9 /* Release configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot (iOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "PromptZero — AI Prompt Copilot";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourCompany.PromptZero---AI-Prompt-Copilot";
+				PRODUCT_NAME = "PromptZero — AI Prompt Copilot";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9659F7AA306967DA00B30DA9 /* Debug configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (macOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "PromptZero — AI Prompt Copilot Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourCompany.PromptZero---AI-Prompt-Copilot.Extension";
+				PRODUCT_NAME = "PromptZero — AI Prompt Copilot Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9659F7AB306967DA00B30DA9 /* Release configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (macOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "PromptZero — AI Prompt Copilot Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourCompany.PromptZero---AI-Prompt-Copilot.Extension";
+				PRODUCT_NAME = "PromptZero — AI Prompt Copilot Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		9659F7AE306967DA00B30DA9 /* Debug configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot (macOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "PromptZero — AI Prompt Copilot";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourCompany.PromptZero---AI-Prompt-Copilot";
+				PRODUCT_NAME = "PromptZero — AI Prompt Copilot";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9659F7AF306967DA00B30DA9 /* Release configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot (macOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "PromptZero — AI Prompt Copilot";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourCompany.PromptZero---AI-Prompt-Copilot";
+				PRODUCT_NAME = "PromptZero — AI Prompt Copilot";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9659F754306967D900B30DA9 /* Build configuration list for PBXProject "PromptZero — AI Prompt Copilot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9659F7A0306967DA00B30DA9 /* Debug configuration for PBXProject "PromptZero — AI Prompt Copilot" */,
+				9659F7A1306967DA00B30DA9 /* Release configuration for PBXProject "PromptZero — AI Prompt Copilot" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		9659F7A2306967DA00B30DA9 /* Build configuration list for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9659F7A3306967DA00B30DA9 /* Debug configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (iOS)" */,
+				9659F7A4306967DA00B30DA9 /* Release configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (iOS)" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		9659F7A6306967DA00B30DA9 /* Build configuration list for PBXNativeTarget "PromptZero — AI Prompt Copilot (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9659F7A7306967DA00B30DA9 /* Debug configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot (iOS)" */,
+				9659F7A8306967DA00B30DA9 /* Release configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot (iOS)" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		9659F7A9306967DA00B30DA9 /* Build configuration list for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9659F7AA306967DA00B30DA9 /* Debug configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (macOS)" */,
+				9659F7AB306967DA00B30DA9 /* Release configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot Extension (macOS)" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		9659F7AD306967DA00B30DA9 /* Build configuration list for PBXNativeTarget "PromptZero — AI Prompt Copilot (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9659F7AE306967DA00B30DA9 /* Debug configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot (macOS)" */,
+				9659F7AF306967DA00B30DA9 /* Release configuration for PBXNativeTarget "PromptZero — AI Prompt Copilot (macOS)" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9659F751306967D900B30DA9 /* Project object */;
+	validationLevel = 1;
+}
