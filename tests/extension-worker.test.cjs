@@ -18,6 +18,13 @@ test('messages reject unrelated pages, frames, and extension identities',()=>{
   const w=worker(); const msg={type:'promptzero.review',prompt:'hello'};
   for(const s of [{...sender,id:'b'.repeat(32)},{...sender,url:'https://evil.test'},{...sender,frameId:1}])assert.equal(w.handlers.message(msg,s,()=>assert.fail()),false);
 });
+
+test('Safari-style sender fields use the tab URL',async()=>{
+  const w=worker(async()=>({ok:true,json:async()=>({protocol:1,original:'Please fix this',optimized:'Fix this',diff:[],issues:[],metrics:{saved:1}})}));
+  let response;const pending=new Promise(resolve=>{response=resolve});
+  assert.equal(w.handlers.message({type:'promptzero.review',prompt:'Please fix this'},{tab:{id:4,url:'https://chatgpt.com/c/1'}},response),true);
+  assert.equal((await pending).data.optimized,'Fix this');
+});
 test('only current draft is forwarded to the fixed endpoint',async()=>{
   let captured;
   const w=worker(async(url,options)=>{captured={url,options};return{ok:true,json:async()=>({protocol:1})};});

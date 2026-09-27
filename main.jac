@@ -21,6 +21,19 @@ async def protect(request: Request, call_next: any) -> any {
     }
     # Browser requests are same-origin; no permissive CORS or prompt persistence.
     origin = request.headers.get("origin");
+    extension_cors = bool(origin) and extension_request_allowed(origin or "", request.url.path, "extension-v1");
+    if request.method == "OPTIONS" and extension_cors {
+        return JSONResponse(
+            {}, status_code=200,
+            headers={
+                "Access-Control-Allow-Origin": origin or "",
+                "Access-Control-Allow-Methods": "POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, X-PromptZero-Client",
+                "Access-Control-Max-Age": "600",
+                "Vary": "Origin"
+            }
+        );
+    }
     if request.method == "POST" and origin and origin.rstrip("/") != str(request.base_url).rstrip("/") {
         if not extension_request_allowed(origin, request.url.path, request.headers.get("x-promptzero-client", "")) {
             return JSONResponse({"detail": "Cross-origin requests are not permitted."}, status_code=403);
@@ -31,6 +44,10 @@ async def protect(request: Request, call_next: any) -> any {
     response.headers["Referrer-Policy"] = "no-referrer";
     response.headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'";
     response.headers["Cache-Control"] = "no-store";
+    if extension_cors {
+        response.headers["Access-Control-Allow-Origin"] = origin or "";
+        response.headers["Vary"] = "Origin";
+    }
     return response;
 }
 

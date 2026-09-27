@@ -19,7 +19,8 @@ chrome.action.onClicked.addListener(async tab => {
   }
 });
 chrome.runtime.onMessage.addListener((message, sender, respond) => {
-  if (sender.id !== chrome.runtime.id || !sender.tab || sender.frameId !== 0 || !supported(sender.url)) return false;
+  const senderUrl = sender.url || sender.tab?.url;
+  if ((sender.id && sender.id !== chrome.runtime.id) || !sender.tab || (sender.frameId !== undefined && sender.frameId !== 0) || !supported(senderUrl)) return false;
   if (message?.type === 'promptzero.document') {
     if (typeof message.name !== 'string' || !Array.isArray(message.bytes) || message.bytes.length > 4000000) { respond({error:'Choose a PDF, TXT, or Markdown file under 4 MB.'}); return false; }
     const form = new FormData(); form.append('document', new Blob([new Uint8Array(message.bytes)]), message.name);

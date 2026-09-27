@@ -67,7 +67,12 @@ test "extension HTTP boundary preserves web origin rejection" {
     body = {"protocol": 1, "prompt": "Please explain gravity."};
     response = client.post("/api/extension/review", headers=headers, json=body);
     assert response.status_code == 200;
+    assert response.headers["access-control-allow-origin"] == headers["Origin"];
     assert response.json()["can_apply"];
+    preflight = client.options("/api/extension/review", headers={"Origin": headers["Origin"], "Access-Control-Request-Method": "POST", "Access-Control-Request-Headers": "content-type,x-promptzero-client"});
+    assert preflight.status_code == 200;
+    assert preflight.headers["access-control-allow-origin"] == headers["Origin"];
+    assert "X-PromptZero-Client" in preflight.headers["access-control-allow-headers"];
     assert client.post("/api/extension/review", json=body).status_code == 403;
     assert client.post("/api/compile", headers=headers, json=body).status_code == 403;
     headers["Origin"] = "https://chatgpt.com";
