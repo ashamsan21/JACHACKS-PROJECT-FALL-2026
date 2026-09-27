@@ -12,6 +12,7 @@
 - Camera vocabulary suggestions are connected to both the main web app and browser extension
 - Safari extension requests now receive CORS preflight responses and accept Safari-style sender metadata
 - ChatGPT editor detection supports current composer-input, ProseMirror, Lexical, plaintext-only, and textarea variants
+- Replaced the confusing “Prompt Copilot” label with “Write less. Get more.”
 - PDF conversion no longer selects excerpts, interprets the prompt, or removes document sections
 
 ### Removed

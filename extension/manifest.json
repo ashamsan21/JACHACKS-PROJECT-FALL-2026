@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "PromptZero — AI Prompt Copilot",
+  "name": "PromptZero",
   "version": "0.3.1",
   "description": "Fix wording, convert PDFs to Markdown, suggest precise vocabulary, and show estimated token savings. Never auto-sends.",
   "permissions": ["activeTab", "scripting"],
