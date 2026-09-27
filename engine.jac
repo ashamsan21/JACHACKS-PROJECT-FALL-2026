@@ -355,6 +355,8 @@ walker CompressionWalker {
             (r"\bthat the viewer would like to have answers to\b", "that viewers want answered", "Audience intent clarified"),
             (r"\bjust be like me[,]?\s*like\s*", "Match my voice and ", "Voice requirement clarified"),
             (r"\bbe viral like that\b", "make them shareable", "Vague reach goal clarified"),
+            (r"^make the camera slowly (?:get|come|move) closer to (.+?)[.!?]*$", r"Use a slow dolly-in toward \1.", "Informal camera movement replaced with the filmmaking term"),
+            (r"^move the camera slowly (?:closer to|toward) (.+?)[.!?]*$", r"Use a slow dolly-in toward \1.", "Informal camera movement replaced with the filmmaking term"),
             (r"\s+\.\.\.$", ".", "Trailing speech pause removed"),
             (r"^i want (?:to create|to add|to make)\s+", "Create ", "Request preamble shortened"),
             (r"^and the other thing i want (?:is|it to)\s+", "Also, ", "Request preamble shortened"),

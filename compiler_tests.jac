@@ -52,6 +52,12 @@ test "speech transcript stutters and vague filler are reconstructed" {
     assert "would- would" not in result["optimized"].lower();
 }
 
+test "plain camera movement becomes precise filmmaking vocabulary" {
+    result = compile_prompt("Make the camera slowly get closer to his face.");
+    assert result["optimized"] == "Use a slow dolly-in toward his face.";
+    assert result["metrics"]["after"] < result["metrics"]["before"];
+}
+
 test "conversation metadata is removed and project specs are compacted" {
     source = "[Planning](chatgpt-conversation://abc-123): Build a tool using Jac with at least 40% of the project in Jac. Build the first end-to-end vertical slice: input -> analysis -> output. Make the UI polished and dark developer-tool styled. Do not fake functionality.";
     result = compile_prompt(source);

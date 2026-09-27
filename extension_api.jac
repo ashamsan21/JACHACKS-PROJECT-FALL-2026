@@ -7,12 +7,13 @@ import from engine { compile_prompt, critical_literals }
 def vocabulary_suggestions(prompt: str) -> list[dict[str, str]] {
     text = prompt.lower();
     video = bool(re.search(r"\b(camera|video|film|shot|scene|angle|lens|cinematic)\b", text));
-    vague = bool(re.search(r"\b(something|somehow|nice|good|better|position|move|angle|like this|kind of)\b", text));
+    vague = bool(re.search(r"\b(something|somehow|nice|good|better|position|move|closer|angle|like this|kind of)\b", text));
     if not video or not vague { return []; }
     return [
+        {"term": "dolly-in", "meaning": "camera physically moves closer to the subject", "insert": "Use a slow dolly-in toward the subject."},
+        {"term": "zoom-in", "meaning": "lens magnifies the subject while the camera stays still", "insert": "Use a slow zoom-in on the subject."},
         {"term": "low-angle shot", "meaning": "camera looks upward, making the subject feel powerful", "insert": "Use a low-angle shot to make the subject feel powerful."},
         {"term": "over-the-shoulder", "meaning": "frames the scene from behind one subject", "insert": "Frame it as an over-the-shoulder shot."},
-        {"term": "dolly-in", "meaning": "camera physically moves toward the subject", "insert": "Use a slow dolly-in toward the subject."},
         {"term": "tracking shot", "meaning": "camera follows a moving subject", "insert": "Use a smooth tracking shot that follows the subject."},
         {"term": "bird's-eye view", "meaning": "camera looks straight down from above", "insert": "Show the scene from a bird's-eye view."},
         {"term": "shallow depth of field", "meaning": "subject sharp, background blurred", "insert": "Use a shallow depth of field with a softly blurred background."}

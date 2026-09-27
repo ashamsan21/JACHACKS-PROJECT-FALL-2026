@@ -56,6 +56,9 @@ test "camera vocabulary is contextual and actionable" {
     assert len(items) >= 5;
     assert "dolly-in" in [item["term"] for item in items];
     assert not vocabulary_suggestions("Explain gravity in three paragraphs.");
+    closer = vocabulary_suggestions("Make the camera slowly get closer to his face.");
+    assert closer[0]["term"] == "dolly-in";
+    assert "zoom-in" in [item["term"] for item in closer];
 }
 
 test "extension HTTP boundary preserves web origin rejection" {
