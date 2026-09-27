@@ -11,6 +11,7 @@
 - Informal camera movement such as “get closer” is rewritten with precise filmmaking vocabulary
 - Camera vocabulary suggestions are connected to both the main web app and browser extension
 - Safari extension requests now receive CORS preflight responses and accept Safari-style sender metadata
+- ChatGPT editor detection supports current composer-input, ProseMirror, Lexical, plaintext-only, and textarea variants
 - PDF conversion no longer selects excerpts, interprets the prompt, or removes document sections
 
 ### Removed

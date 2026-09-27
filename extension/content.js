@@ -12,8 +12,26 @@
   const $ = id => root.getElementById(id);
   let snapshot = null, review = null, undo = null, pending = false, generation = 0;
   function composer() {
-    // Deliberately avoid generic contenteditable selectors that might match conversation editing.
-    return [...document.querySelectorAll('#prompt-textarea, textarea[data-id="root"]')].find(e => e.getClientRects().length && !e.disabled && (e.tagName === 'TEXTAREA' || e.isContentEditable));
+    const selectors = [
+      '#prompt-textarea',
+      '[data-testid="composer-input"]',
+      'textarea[data-id="root"]',
+      'textarea[placeholder*="Message" i]',
+      'div.ProseMirror[contenteditable]',
+      '[data-lexical-editor="true"][contenteditable]',
+      'main form [contenteditable]'
+    ];
+    const candidates = [...new Set(document.querySelectorAll(selectors.join(',')))].filter(editor => {
+      const editable = editor.tagName === 'TEXTAREA' || editor.isContentEditable || ['true','plaintext-only'].includes(editor.getAttribute('contenteditable'));
+      return editable && !editor.disabled && editor.getAttribute('aria-disabled') !== 'true' && editor.getClientRects().length;
+    });
+    // The active composer is normally the lowest visible editor. Stable ChatGPT
+    // identifiers win over generic fallbacks so message-edit fields are avoided.
+    candidates.sort((a,b) => {
+      const score = editor => (editor.id === 'prompt-textarea' ? 100000 : 0) + (editor.getAttribute('data-testid') === 'composer-input' ? 90000 : 0) + (editor.closest('form') ? 10000 : 0) + editor.getBoundingClientRect().bottom;
+      return score(b) - score(a);
+    });
+    return candidates[0] || null;
   }
   function read(editor) { return editor.tagName === 'TEXTAREA' ? editor.value : editor.innerText; }
   function status(text, error=false) { $('status').textContent=text; $('status').className=error?'error':''; }
@@ -31,7 +49,7 @@
     if(!event.isTrusted)return;
     if(pending)return;
     const editor=composer();
-    if(!editor){status('ChatGPT’s draft editor was not found. Open a conversation and try again.',true);return;}
+    if(!editor){status('ChatGPT’s message box was not found. Click inside the message box, then try again.',true);return;}
     const text=read(editor);
     if(!text.trim()){status('Write a prompt in ChatGPT first.',true);return;}
     if(text.length>20000){status('Use a draft of 20,000 characters or fewer.',true);return;}
