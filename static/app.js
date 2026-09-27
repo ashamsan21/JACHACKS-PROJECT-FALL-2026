@@ -79,6 +79,7 @@ function render() {
   $('saved').textContent = `${fmt(Math.abs(m.saved))} ${m.saved >= 0 ? 'fewer' : 'more'} est. tokens`;
   $('optimized').textContent = result.optimized;
   $('outputLabel').textContent = documentMode ? 'MARKDOWN OUTPUT' : 'OPTIMIZED PROMPT';
+  $('download').hidden = !documentMode;
   $('beforeLabel').textContent = documentMode ? 'PDF text tokens' : 'input tokens';
   $('afterLabel').textContent = documentMode ? 'Markdown tokens' : 'output tokens';
   $('meaningLock').hidden = documentMode;
@@ -174,6 +175,7 @@ $('clear').addEventListener('click', () => {
   $('saved').textContent = 'tokens saved'; $('optimized').textContent = 'Your compiled prompt will appear here.';
   $('resultStatus').textContent = 'Ready to compile'; $('resultStatus').className = 'status';
   $('lockSummary').textContent = 'Requirements are verified locally or restored.'; $('lockBadge').textContent = 'ENABLED';
+  $('download').hidden = true;
   $('contextPreview').hidden = true; $('insights').innerHTML = ''; $('nodeCount').textContent = '0';
   $('graphCanvas').innerHTML = '<div class="empty-state">Your intent, made visible.<small>Compile a prompt to explore its graph.</small></div>';
   $('inspector').innerHTML = '<span class="tiny-label">NODE INSPECTOR</span><p>Select a node after compilation.</p>';
@@ -191,6 +193,15 @@ $('document').addEventListener('change', () => { edited(); const file = $('docum
 $('removeFile').addEventListener('click', () => { $('document').value = ''; updateFile(); edited(); });
 $('attach').addEventListener('click', () => $('document').click());
 $('copy').addEventListener('click', async () => { if (!result || stale) return; try { await navigator.clipboard.writeText(result.compiled); toast('Compiled context copied'); } catch { notify('Clipboard access was denied. Select and copy the compiled text manually.', true); } });
+$('download').addEventListener('click', () => {
+  if (!result || stale || result.mode !== 'document') return;
+  const url = URL.createObjectURL(new Blob([result.compiled], {type:'text/markdown;charset=utf-8'}));
+  const link = document.createElement('a');
+  link.href = url; link.download = result.filename || 'document.md';
+  document.body.append(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast(`${link.download} created`);
+});
 document.addEventListener('keydown', event => { if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') { event.preventDefault(); compile(); } });
 let resizeTimer;
 window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (result && !$('graphView').hidden) renderGraph(); }, 150); });

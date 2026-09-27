@@ -6,6 +6,7 @@
 
 - PDF upload now performs one job only: convert the complete file to Markdown
 - PDF results show estimated tokens before and after conversion in both the app and extension
+- PDF conversion creates a downloadable `.md` file named after the source document
 - Prompt cleanup uses lightweight Jac rules without a language model or per-clause inference
 - PDF conversion no longer selects excerpts, interprets the prompt, or removes document sections
 

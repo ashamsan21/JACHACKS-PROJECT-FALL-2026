@@ -108,7 +108,7 @@ async def extension_document(request: Request) -> dict {
         await upload.close();
         plain_text = "\n\n".join([str(chunk["text"]) for chunk in chunks]);
         result = compile_document_markdown(plain_text, markdown, filename);
-        return {"protocol": 1, "filename": filename, "markdown": markdown, "metrics": result["metrics"]};
+        return {"protocol": 1, "filename": result["filename"], "markdown": markdown, "metrics": result["metrics"]};
     } except ValueError as failure { raise HTTPException(status_code=422, detail=str(failure)); }
 }
 

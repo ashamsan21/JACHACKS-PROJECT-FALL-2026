@@ -143,6 +143,7 @@ test "document conversion keeps the complete Markdown" {
     markdown = document_to_markdown(source.encode("utf-8"), "notes.md", document);
     result = compile_document_markdown(source, markdown, "notes.md");
     assert result["mode"] == "document";
+    assert result["filename"] == "notes.md";
     assert "Sunlight powers photosynthesis" in result["optimized"];
     assert "nucleus holds DNA" in result["optimized"];
     assert len(result["trace"]) == 1;

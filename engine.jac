@@ -539,9 +539,11 @@ def compile_document_markdown(source_text: str, markdown: str, filename: str) ->
     before = estimate_tokens(source_text);
     after = estimate_tokens(markdown);
     saved = before - after;
+    output_filename = filename.rsplit(".", 1)[0] + ".md";
     return {
         "mode": "document", "original": source_text, "optimized": markdown,
-        "compiled": markdown, "issues": [], "locks": [], "lock_ok": True,
+        "compiled": markdown, "filename": output_filename,
+        "issues": [], "locks": [], "lock_ok": True,
         "context": "", "context_note": "",
         "metrics": {
             "before": before, "after": after, "saved": saved,
