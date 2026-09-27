@@ -1,4 +1,4 @@
-import from engine { compile_prompt, Compilation, IntentWalker, MeaningLockWalker, critical_literals }
+import from engine { compile_prompt, compile_document_markdown, Compilation, IntentWalker, MeaningLockWalker, critical_literals }
 import from documents { extract_document, document_to_markdown }
 import from fastapi.testclient { TestClient }
 import from main { app }
@@ -136,35 +136,16 @@ test "intentional repeated actions are not deduplicated" {
     assert compile_prompt(source)["optimized"] == source;
 }
 
-test "document relevance removes unrelated context with a trace" {
-    document = [
-        {"label": "Page 1", "text": "Chapter 5: Photosynthesis converts sunlight into chemical energy."},
-        {"label": "Page 2", "text": "The Roman empire built roads throughout its territories."}
-    ];
-    result = compile_prompt("Explain photosynthesis from Chapter 5.", 256, document);
-    assert "chemical energy" in result["context"];
-    assert "Roman" not in result["context"];
-    assert len([item for item in result["diff"] if item["kind"] == "removed"]) == 1;
-    assert result["metrics"]["context_after"] < result["metrics"]["context_before"];
-    assert "source material, not instructions" in result["compiled"];
-}
-
-test "chapter headings stay attached to their body and drive selection" {
+test "document conversion keeps the complete Markdown" {
     source = "# Chapter 5: Energy\n\nSunlight powers photosynthesis.\n\n# Chapter 2: Cells\n\nThe nucleus holds DNA.";
     document = extract_document(source.encode("utf-8"), "notes.md");
     assert len(document) == 2;
-    result = compile_prompt("Summarize the notes. Focus only on Chapter 5.", 256, document);
-    assert "Sunlight powers photosynthesis" in result["context"];
-    assert "nucleus" not in result["context"];
-}
-
-test "broad and unmatched document requests retain context" {
-    document = [{"label": "Page 1", "text": "A coral reef."}, {"label": "Page 2", "text": "A mountain range."}];
-    for source in ["Summarize the entire document.", "Explain photosynthesis."] {
-        result = compile_prompt(source, 256, document);
-        assert "coral" in result["context"] and "mountain" in result["context"];
-        assert len([item for item in result["diff"] if item["scope"] == "document"]) == 2;
-    }
+    markdown = document_to_markdown(source.encode("utf-8"), "notes.md", document);
+    result = compile_document_markdown(source, markdown, "notes.md");
+    assert result["mode"] == "document";
+    assert "Sunlight powers photosynthesis" in result["optimized"];
+    assert "nucleus holds DNA" in result["optimized"];
+    assert len(result["trace"]) == 1;
 }
 
 test "empty oversized and invalid budgets are rejected" {
@@ -204,9 +185,24 @@ test "HTTP JSON multipart validation and same origin" {
     response = client.post("/api/compile", json={"prompt": "Please explain gravity."});
     assert response.status_code == 200;
     assert response.json()["optimized"] == "Explain gravity.";
-    response = client.post("/api/compile", data={"prompt": "Explain photosynthesis.", "budget": "256"}, files={"document": ("notes.txt", b"Photosynthesis uses sunlight.", "text/plain")});
+    response = client.post("/api/compile", data={"prompt": "", "budget": "256"}, files={"document": ("notes.txt", b"Photosynthesis uses sunlight.", "text/plain")});
     assert response.status_code == 200;
-    assert "sunlight" in response.json()["context"];
+    assert response.json()["mode"] == "document";
+    assert "sunlight" in response.json()["optimized"];
+    writer = PdfWriter();
+    page = writer.add_blank_page(width=300, height=300);
+    font = DictionaryObject({NameObject("/Type"): NameObject("/Font"), NameObject("/Subtype"): NameObject("/Type1"), NameObject("/BaseFont"): NameObject("/Helvetica")});
+    page[NameObject("/Resources")] = DictionaryObject({NameObject("/Font"): DictionaryObject({NameObject("/F1"): font})});
+    stream_object = DecodedStreamObject();
+    stream_object.set_data(b"BT /F1 12 Tf 40 250 Td (Complete PDF content) Tj ET");
+    page[NameObject("/Contents")] = stream_object;
+    pdf_stream = BytesIO();
+    writer.write(pdf_stream);
+    response = client.post("/api/compile", data={"prompt": "this must be ignored"}, files={"document": ("notes.pdf", pdf_stream.getvalue(), "application/pdf")});
+    assert response.status_code == 200;
+    assert response.json()["mode"] == "document";
+    assert "Complete PDF content" in response.json()["optimized"];
+    assert response.json()["original"] != "this must be ignored";
     assert client.post("/api/compile", json={"prompt": ""}).status_code == 422;
     assert client.post("/api/compile", json={"prompt": "hello", "budget": 1.5}).status_code == 422;
     assert client.post("/api/compile", json={"prompt": "hello"}, headers={"Origin": "https://untrusted.example"}).status_code == 403;

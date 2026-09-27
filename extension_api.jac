@@ -1,7 +1,7 @@
 """Versioned extension boundary. Draft review and replacement eligibility stay in Jac."""
 import re;
 import hashlib;
-import from engine { compile_prompt }
+import from engine { compile_prompt, critical_literals }
 
 """Offer precise domain words only when the draft signals a relevant topic."""
 def vocabulary_suggestions(prompt: str) -> list[dict[str, str]] {
@@ -71,8 +71,13 @@ def audit_replacement(result: dict[str, any]) -> tuple[bool, str] {
         return (False, "Meaning Lock restored the original. Review the flagged requirements.");
     }
     for lock in result["locks"] {
-        if not lock["passed"] or str(lock["text"]) not in optimized {
+        if not lock["passed"] {
             return (False, "A protected clause did not survive verification. Keep the original draft.");
+        }
+        for literal in critical_literals(str(lock["text"])) {
+            if str(literal).lower() not in optimized.lower() {
+                return (False, "A protected number or exact value is missing. Keep the original draft.");
+            }
         }
     }
     # Ensure the diff is grounded in this specific request, not a stale response.
@@ -99,7 +104,7 @@ def lock_summary(result: dict[str, any]) -> str {
         return "Meaning Lock: no explicit constraints detected.";
     }
     passed = len([lock for lock in locks if lock["passed"]]);
-    return "Meaning Lock: " + str(passed) + "/" + str(len(locks)) + " detected clauses retained verbatim.";
+    return "Meaning Lock: " + str(passed) + "/" + str(len(locks)) + " literal and negation checks passed.";
 }
 
 def review_draft(body: any) -> dict[str, any] {

@@ -1,4 +1,4 @@
-"""Bounded document extraction; selection is performed by ContextWalker."""
+"""Bounded document extraction and whole-document Markdown conversion."""
 import re;
 import from io { BytesIO }
 import from pypdf { PdfReader }
@@ -73,8 +73,8 @@ def extract_document(data: bytes, filename: str) -> list[dict[str, str]] {
 }
 
 """Convert a bounded text document into readable, page-attributed Markdown."""
-def document_to_markdown(data: bytes, filename: str) -> str {
-    chunks: list[dict[str, str]] = extract_document(data, filename);
+def document_to_markdown(data: bytes, filename: str, chunks: list[dict[str, str]] | None = None) -> str {
+    chunks = chunks or extract_document(data, filename);
     if filename.lower().endswith(".pdf") {
         try {
             converted = MarkItDown(enable_plugins=False).convert_stream(BytesIO(data), file_extension=".pdf");

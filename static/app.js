@@ -22,8 +22,9 @@ function toast(text) {
 }
 function setBusy(value) {
   busy = value;
-  $('compile').disabled = value || !$('prompt').value.trim();
-  $('compileText').textContent = value ? 'Compiling…' : 'Compile context';
+  const hasDocument = !!$('document').files[0];
+  $('compile').disabled = value || (!hasDocument && !$('prompt').value.trim());
+  $('compileText').textContent = value ? (hasDocument ? 'Converting…' : 'Cleaning…') : (hasDocument ? 'Convert to Markdown' : 'Clean prompt');
   $('compileIcon').classList.toggle('spinning', value);
   $('compile').setAttribute('aria-busy', String(value));
 }
@@ -40,7 +41,7 @@ function edited() {
 }
 
 async function compile() {
-  if (busy || !$('prompt').value.trim()) return;
+  if (busy || (!$('prompt').value.trim() && !$('document').files[0])) return;
   const current = revision;
   controller = new AbortController();
   setBusy(true);
@@ -71,23 +72,30 @@ async function compile() {
 
 function render() {
   const m = result.metrics;
+  const documentMode = result.mode === 'document';
   $('before').textContent = `~${fmt(m.before)}`;
   $('after').textContent = `~${fmt(m.after)}`;
   $('percent').textContent = `${m.percent > 0 ? '−' : m.percent < 0 ? '+' : ''}${Math.abs(m.percent)}%`;
   $('saved').textContent = `${fmt(Math.abs(m.saved))} ${m.saved >= 0 ? 'fewer' : 'more'} est. tokens`;
   $('optimized').textContent = result.optimized;
+  $('outputLabel').textContent = documentMode ? 'MARKDOWN OUTPUT' : 'OPTIMIZED PROMPT';
+  $('beforeLabel').textContent = documentMode ? 'PDF text tokens' : 'input tokens';
+  $('afterLabel').textContent = documentMode ? 'Markdown tokens' : 'output tokens';
+  $('meaningLock').hidden = documentMode;
+  $('insights').hidden = documentMode;
+  $('analysis').hidden = documentMode;
   $('contextPreview').hidden = !result.context;
   $('contextPreview').textContent = result.context ? `ATTACHED CONTEXT\n${result.context}\n\n${result.context_note}` : '';
   $('copy').disabled = false;
-  $('resultStatus').textContent = 'Compilation complete';
+  $('resultStatus').textContent = documentMode ? 'PDF converted' : 'Prompt cleaned';
   $('resultStatus').className = 'status success';
   const verified = result.locks.filter(lock => lock.passed).length;
   $('lockSummary').textContent = result.locks.length ? `${verified} rewritten safely · ${result.locks.length - verified} restored to original wording.` : 'No explicit constraints detected. Review the output.';
   $('lockBadge').textContent = result.lock_ok ? (verified ? 'VERIFIED' : 'NO LOCKS') : 'RESTORED';
   $('nodeCount').textContent = result.graph.nodes.length;
   $('analysisMeta').textContent = `${result.graph.nodes.length} NODES · ${result.graph.edges.length} EDGES · ${result.duration_ms} ms`;
-  $('footerStatus').textContent = `${result.trace.length} walkers executed · ${m.local_semantic_checks || 0} local semantic checks · 0 external model calls`;
-  if (!m.within_budget) notify(`Estimated context is ${fmt(m.after)} tokens, above your ${fmt(m.budget)} target. Protected requirements were retained.`);
+  $('footerStatus').textContent = `${result.trace.length} Jac walkers executed · 0 model calls`;
+  if (!m.within_budget) notify(`Estimated output is ${fmt(m.after)} tokens, above ${fmt(m.budget)} tokens.`);
   else if (result.context_note) notify(result.context_note);
   renderInsights();
   renderGraph();
@@ -175,8 +183,9 @@ $('clear').addEventListener('click', () => {
 });
 function updateFile() {
   const file = $('document').files[0];
-  $('fileLabel').innerHTML = file ? `${escapeHTML(file.name)}<small>${fmt(Math.ceil(file.size/1024))} KB · ready to extract</small>` : 'Attach context <small>PDF, TXT, MD · up to 4 MB</small>';
+  $('fileLabel').innerHTML = file ? `${escapeHTML(file.name)}<small>${fmt(Math.ceil(file.size/1024))} KB · ready to convert</small>` : 'Convert document <small>PDF, TXT, MD · up to 4 MB</small>';
   $('removeFile').hidden = !file;
+  setBusy(false);
 }
 $('document').addEventListener('change', () => { edited(); const file = $('document').files[0]; if (file && file.size > 4000000) { $('document').value = ''; notify('Choose a file smaller than 4 MB.', true); } updateFile(); });
 $('removeFile').addEventListener('click', () => { $('document').value = ''; updateFile(); edited(); });

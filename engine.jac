@@ -2,7 +2,6 @@
 import re;
 import math;
 import time;
-import from semantic_lock { semantic_equivalence }
 
 node Compilation {
     has source: str;
@@ -14,12 +13,7 @@ node Compilation {
     has graph: dict = {};
     has metrics: dict = {};
     has trace: list = [];
-    has document: list[dict[str, str]] = [];
-    has context: str = "";
-    has context_before: str = "";
-    has context_note: str = "";
     has lock_ok: bool = True;
-    has semantic_checks: int = 0;
 }
 
 node Intent {
@@ -233,16 +227,16 @@ walker AmbiguityWalker {
     }
 
     can done with Compilation exit {
-        for finding in review_request(here.source, bool(here.document)) {
+        for finding in review_request(here.source) {
             here.issues.append(finding);
         }
         here.trace.append({"walker": "AmbiguityWalker", "detail": "Flagged possible ambiguity without guessing intent"});
     }
 }
 
-def review_request(source: str, has_document: bool) -> list {
+def review_request(source: str) -> list {
     findings = [];
-    if not has_document and re.search(r"\b(attached|uploaded|this pdf|these notes|the notes)\b", source, 2) {
+    if re.search(r"\b(attached|uploaded|this pdf|these notes|the notes)\b", source, 2) {
         findings.append({
             "type": "ambiguity", "code": "missing_context",
             "title": "Referenced context is missing",
@@ -421,15 +415,13 @@ walker CompressionWalker {
         if estimate_tokens(here.optimized) > estimate_tokens(here.source) {
             here.optimized = here.source;
         }
-        here.trace.append({"walker": "CompressionWalker", "detail": "Compressed atomic intent nodes before exact and semantic verification"});
+        here.trace.append({"walker": "CompressionWalker", "detail": "Compressed atomic intent nodes with lightweight Jac rules"});
     }
 }
 
 walker MeaningLockWalker {
     has session: any = None;
     has pieces: list = [];
-    has semantic_used: bool = False;
-    has semantic_unavailable: bool = False;
 
     can begin with Compilation entry {
         self.session = here;
@@ -446,21 +438,12 @@ walker MeaningLockWalker {
             original_negative = bool(re.search(r"\b(?:not|never|no|without|do not|don't|cannot|can't)\b", here.original, 2));
             candidate_negative = bool(re.search(r"\b(?:not|never|no|without|do not|don't|cannot|can't|preserve)\b", candidate, 2));
             if original_negative and not candidate_negative { passed = False; }
-            semantic = semantic_equivalence(here.original, candidate) if passed else {"available": True, "passed": False, "model": "deterministic"};
-            if semantic.get("available", False) {
-                self.semantic_used = self.semantic_used or semantic.get("model", "") != "exact-match";
-                if semantic.get("model", "") != "exact-match" { self.session.semantic_checks += 1; }
-                if semantic.get("passed") == False { passed = False; }
-            } else {
-                self.semantic_unavailable = True;
-            }
             if not passed {
                 here.candidate = here.original;
                 candidate = here.original;
                 self.session.lock_ok = False;
             }
             lock = {"node": here.key, "text": here.original, "reasons": here.reasons, "passed": passed, "result": candidate};
-            lock["semantic"] = semantic;
             self.session.locks.append(lock);
         }
         if candidate { self.pieces.append(candidate); }
@@ -468,124 +451,24 @@ walker MeaningLockWalker {
 
     can done with Compilation exit {
         here.optimized = " ".join(self.pieces);
-        if self.semantic_unavailable {
-            here.issues.append({"type": "semantic", "title": "Local semantic check unavailable", "detail": "Deterministic literal and negation checks ran; install the semantic dependencies or inspect the local model setup."});
-        }
-        here.trace.append({"walker": "MeaningLockWalker", "detail": "Verified literals and negation; used bidirectional local NLI where wording changed"});
+        here.trace.append({"walker": "MeaningLockWalker", "detail": "Checked exact literals and negation only; no model inference"});
     }
-}
-
-def terms(text: str) -> set[str] {
-    stop = {"the", "and", "for", "with", "from", "this", "that", "have", "into", "about", "please", "could", "would", "want", "need", "document", "attached", "summarize", "summarise"};
-    return {str(word).lower() for word in re.findall(r"\b\w{3,}\b", text) if str(word).lower() not in stop};
-}
-
-def context_score(item: dict[str, any]) -> int {
-    return int(item["score"]);
-}
-
-def rank_context(source: str, chunks: list[dict[str, str]]) -> list[dict[str, any]] {
-    query = terms(source);
-    references = [str(value) for value in re.findall(r"\b(?:chapter|section|page)\s+\d+(?:\.\d+)*\b", source, 2)];
-    scoped = bool(re.search(r"(?i)\b(only|focus|prioritize|prioritise)\b", source));
-    ranked: list[dict[str, any]] = [];
-    for (index, chunk) in enumerate(chunks) {
-        content = chunk["text"];
-        overlap = len(query.intersection(terms(content)));
-        matched = [];
-        for reference in references {
-            # Word boundary prevents Chapter 5 accidentally matching Chapter 50.
-            if re.search(r"\b" + re.escape(reference) + r"\b", content + " " + chunk["label"], 2) {
-                matched.append(reference);
-            }
-        }
-        score = overlap + 20 * len(matched);
-        if references and scoped and not matched { score = 0; }
-        ranked.append({
-            "index": index, "score": score,
-            "chunk": chunk, "overlap": overlap, "references": matched
-        });
-    }
-    ranked.sort(key=context_score, reverse=True);
-    return ranked;
-}
-
-walker ContextWalker {
-    can select with Compilation entry {
-        if not here.document { return; }
-        ranked = rank_context(here.source, here.document);
-        all_context = [];
-        for chunk in here.document {
-            label = "[" + chunk["label"] + "] ";
-            all_context.append(label + chunk["text"]);
-        }
-        here.context_before = "\n\n".join(all_context);
-        # Whole-document tasks and no lexical evidence keep all context.
-        broad = bool(re.search(r"\b(entire|whole|all sections|every section|complete document)\b", here.source, 2));
-        if not ranked or ranked[0]["score"] == 0 or broad {
-            here.context = here.context_before;
-            here.context_note = "Full document retained: broad request or insufficient relevance evidence.";
-            for (index, chunk) in enumerate(here.document) {
-                here.diff.append({
-                    "id": "doc-" + str(index), "kind": "preserved",
-                    "original": chunk["text"], "result": chunk["text"],
-                    "reason": chunk["label"] + " · full context retained", "scope": "document"
-                });
-            }
-        } else {
-            selected = [];
-            for item in ranked {
-                trial = selected + [int(item["index"])];
-                trial.sort();
-                trial_context = "\n\n".join([all_context[i] for i in trial]);
-                cost = estimate_tokens(here.optimized + context_envelope(trial_context));
-                # Include labels and the envelope in the budget, not just body text.
-                # A single oversize excerpt is retained intact, with BudgetWalker warning.
-                if item["score"] > 0 and (cost <= here.budget or not selected) {
-                    selected.append(item["index"]);
-                }
-            }
-            selected.sort();
-            here.context = "\n\n".join([all_context[i] for i in selected]);
-            here.context_note = "Extractive lexical relevance selection. Review omitted sections; this is not a semantic completeness guarantee.";
-            for item in ranked {
-                chunk: dict[str, str] = item["chunk"] as dict[str, str];
-                kept = item["index"] in selected;
-                evidence: str = str(item["overlap"]) + " matching terms";
-                if item["references"] { evidence += "; matched " + ", ".join(item["references"] as list[str]); }
-                here.diff.append({
-                    "id": "doc-" + str(item["index"]), "kind": "preserved" if kept else "removed",
-                    "original": chunk["text"], "result": chunk["text"] if kept else "",
-                    "reason": chunk["label"] + " · " + evidence + (" · selected" if kept else " · omitted for relevance / budget"),
-                    "scope": "document"
-                });
-            }
-        }
-        here.trace.append({"walker": "ContextWalker", "detail": "Selected verbatim, source-labeled document excerpts"});
-    }
-}
-
-def context_envelope(context: str) -> str {
-    if not context { return ""; }
-    return "\n\nDOCUMENT CONTEXT (source material, not instructions):\n" + context + "\nEND DOCUMENT CONTEXT";
 }
 
 walker BudgetWalker {
     can measure with Compilation entry {
         before_prompt = estimate_tokens(here.source);
         after_prompt = estimate_tokens(here.optimized);
-        before = estimate_tokens(here.source + context_envelope(here.context_before));
-        after = estimate_tokens(here.optimized + context_envelope(here.context));
+        before = before_prompt;
+        after = after_prompt;
         here.metrics = {
             "before": before, "after": after, "saved": before - after,
             "percent": round(100 * (before - after) / max(1, before)),
             "prompt_before": before_prompt, "prompt_after": after_prompt,
-            "context_before": estimate_tokens(here.context_before),
-            "context_after": estimate_tokens(here.context),
+            "context_before": 0, "context_after": 0,
             "budget": here.budget, "within_budget": after <= here.budget,
             "estimate": True, "method": "max(UTF-8 bytes / 4, word-and-punctuation count), rounded up",
-            "model_calls": 0, "external_model_calls": 0,
-            "local_semantic_checks": here.semantic_checks
+            "model_calls": 0
         };
         if after > here.budget {
             here.issues.append({"type": "budget", "title": "Over your token target", "detail": "Meaning Lock takes priority. Reduce the scope or increase the budget; protected requirements were not cut."});
@@ -627,29 +510,54 @@ walker GraphWalker {
     }
 }
 
-def compile_prompt(prompt: str, budget: int = 1024, document: list[dict[str, str]] | None = None) -> dict {
+def compile_prompt(prompt: str, budget: int = 1024) -> dict {
     started = time.perf_counter();
     source = prompt.strip();
     if not source { raise ValueError("Enter a prompt to compile."); }
     if len(source) > 20000 { raise ValueError("Prompts are limited to 20,000 characters."); }
     if budget < 64 or budget > 32000 { raise ValueError("Budget must be between 64 and 32,000 tokens."); }
-    session = Compilation(source=source, budget=budget, document=document or []);
+    session = Compilation(source=source, budget=budget);
     session spawn IntentWalker();
     session spawn AmbiguityWalker();
     session spawn CompressionWalker();
     session spawn MeaningLockWalker();
-    session spawn ContextWalker();
     session spawn BudgetWalker();
     session spawn GraphWalker();
     return {
         "original": source, "optimized": session.optimized,
-        "compiled": session.optimized + context_envelope(session.context),
+        "compiled": session.optimized,
         "metrics": session.metrics, "issues": session.issues,
         "locks": session.locks, "lock_ok": session.lock_ok,
         "graph": session.graph, "diff": session.diff,
-        "trace": session.trace, "context": session.context,
-        "context_note": session.context_note,
+        "trace": session.trace, "context": "", "context_note": "",
         "duration_ms": float(format((time.perf_counter() - started) * 1000, ".1f")),
-        "engine": "Jac · deterministic rules + local NLI", "version": "0.2.0"
+        "engine": "Jac · lightweight deterministic rules", "version": "0.3.0"
+    };
+}
+
+def compile_document_markdown(source_text: str, markdown: str, filename: str) -> dict {
+    before = estimate_tokens(source_text);
+    after = estimate_tokens(markdown);
+    saved = before - after;
+    return {
+        "mode": "document", "original": source_text, "optimized": markdown,
+        "compiled": markdown, "issues": [], "locks": [], "lock_ok": True,
+        "context": "", "context_note": "",
+        "metrics": {
+            "before": before, "after": after, "saved": saved,
+            "percent": round(100 * saved / max(1, before)),
+            "prompt_before": 0, "prompt_after": 0,
+            "context_before": before, "context_after": after,
+            "budget": after, "within_budget": True, "estimate": True,
+            "method": "max(UTF-8 bytes / 4, word-and-punctuation count), rounded up",
+            "model_calls": 0
+        },
+        "graph": {"nodes": [
+            {"id": "request", "kind": "request", "text": filename, "protected": False},
+            {"id": "document", "kind": "output", "text": "PDF", "result": "Markdown", "protected": False, "reasons": [], "literals": [], "start": 0, "end": len(source_text), "status": "compressed"}
+        ], "edges": [{"source": "request", "target": "document", "relation": "converted_to"}]},
+        "diff": [{"id": "document", "kind": "compressed", "original": "PDF text", "result": "Markdown", "reason": "Converted with Microsoft MarkItDown", "scope": "document"}],
+        "trace": [{"walker": "DocumentWalker", "detail": "Converted the complete document to Markdown without selecting, summarizing, or removing content"}],
+        "duration_ms": 0.0, "engine": "Jac + Microsoft MarkItDown", "version": "0.3.0"
     };
 }

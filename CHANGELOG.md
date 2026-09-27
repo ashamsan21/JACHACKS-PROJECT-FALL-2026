@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.5.0 — 2026-09-27
+
+### Changed
+
+- PDF upload now performs one job only: convert the complete file to Markdown
+- PDF results show estimated tokens before and after conversion in both the app and extension
+- Prompt cleanup uses lightweight Jac rules without a language model or per-clause inference
+- PDF conversion no longer selects excerpts, interprets the prompt, or removes document sections
+
+### Removed
+
+- Sentence Transformers, ONNX semantic inference, and DeepEval dependencies
+- The document relevance-selection walker and its unused context-ranking code
+
 ## 0.4.0 — 2026-09-27
 
 ### Added

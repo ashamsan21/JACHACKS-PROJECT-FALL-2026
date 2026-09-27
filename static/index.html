@@ -19,9 +19,9 @@
     <div class="sidebar-footer">LOCAL EDITION <span>v0.3</span></div>
   </aside>
   <div class="app-shell">
-    <header class="topbar"><div><span class="muted">Workspace</span><span class="slash">/</span>Context compiler</div><div class="top-meta"><span class="local-pill">LOCAL SEMANTIC CHECKS</span></div></header>
+    <header class="topbar"><div><span class="muted">Workspace</span><span class="slash">/</span>Context compiler</div><div class="top-meta"><span class="local-pill">LOCAL · NO MODEL CALLS</span></div></header>
     <main id="workspace">
-      <div class="page-heading"><div><div class="eyebrow">MAKE EVERY TOKEN COUNT</div><h1>Write less. <span>Get more.</span></h1><p>Turn a messy prompt into a clear, inspectable instruction.</p></div><div class="mode-badge"><span class="spark">✳</span><div>Hybrid compiler<small>Jac rules + local NLI · no API key</small></div></div></div>
+      <div class="page-heading"><div><div class="eyebrow">MAKE EVERY TOKEN COUNT</div><h1>Write less. <span>Get more.</span></h1><p>Clean text, or convert a PDF directly to Markdown.</p></div><div class="mode-badge"><span class="spark">✳</span><div>Lightweight compiler<small>Jac rules · no model needed</small></div></div></div>
       <div class="workspace-toolbar"><div class="section-kicker"><span class="small-square"></span> COMPILER <span class="subtle">/ NEW COMPILATION</span></div></div>
       <div class="editor-grid">
         <section class="panel input-panel" aria-labelledby="inputHeading">
@@ -29,16 +29,16 @@
           <div class="editor-label"><label for="prompt">PROMPT</label><span>Plain language in</span></div>
           <textarea id="prompt" spellcheck="false" maxlength="20000" placeholder="What do you want AI to do? Paste your prompt here…"></textarea>
           <div class="editor-footer"><span id="charCount">0 characters</span><span>20,000 max</span></div>
-          <div class="attachment-row"><button id="attach" class="upload" type="button" aria-label="Attach document"><span class="attach-icon">＋</span><span id="fileLabel">Attach context <small>PDF, TXT, MD · up to 4 MB</small></span><span class="upload-arrow">↥</span></button><input id="document" type="file" accept=".pdf,.txt,.md" hidden><button id="removeFile" class="text-button" hidden aria-label="Remove attachment">×</button></div>
+          <div class="attachment-row"><button id="attach" class="upload" type="button" aria-label="Convert document"><span class="attach-icon">＋</span><span id="fileLabel">Convert document <small>PDF, TXT, MD · up to 4 MB</small></span><span class="upload-arrow">↥</span></button><input id="document" type="file" accept=".pdf,.txt,.md" hidden><button id="removeFile" class="text-button" hidden aria-label="Remove attachment">×</button></div>
           <div class="compile-controls"><button id="compile" class="primary"><span id="compileIcon">✳</span> <span id="compileText">Compile context</span> <kbd>⌘ ↵</kbd></button></div>
         </section>
         <section class="panel output-panel" aria-labelledby="outputHeading">
           <div class="panel-header"><h2 id="outputHeading"><span class="step accent">02</span> Compiled context</h2><span id="resultStatus" class="status">Ready to compile</span></div>
-          <div class="token-comparison"><div><span class="tiny-label">BEFORE <em>EST.</em></span><strong id="before">—</strong><small>input tokens</small></div><span class="comparison-arrow">⟶</span><div><span class="tiny-label">AFTER <em>EST.</em></span><strong id="after">—</strong><small>output context tokens</small></div><div class="savings"><span id="percent">—</span><small id="saved">tokens saved</small></div></div>
-          <div class="output-label"><span class="tiny-label">OPTIMIZED PROMPT</span><button id="copy" class="text-button" disabled>▣ Copy context</button></div>
+          <div class="token-comparison"><div><span class="tiny-label">BEFORE <em>EST.</em></span><strong id="before">—</strong><small id="beforeLabel">input tokens</small></div><span class="comparison-arrow">⟶</span><div><span class="tiny-label">AFTER <em>EST.</em></span><strong id="after">—</strong><small id="afterLabel">output tokens</small></div><div class="savings"><span id="percent">—</span><small id="saved">tokens saved</small></div></div>
+          <div class="output-label"><span id="outputLabel" class="tiny-label">OPTIMIZED PROMPT</span><button id="copy" class="text-button" disabled>▣ Copy</button></div>
           <div id="optimized" class="optimized" tabindex="0">Your compiled prompt will appear here after you enter your own text.</div>
           <div id="contextPreview" class="context-preview" hidden></div>
-          <div class="meaning-lock"><span class="lock-icon">◇</span><div><strong>Meaning Lock</strong><small id="lockSummary">Requirements are verified locally or restored.</small></div><span id="lockBadge" class="lock-badge">ENABLED</span></div>
+          <div id="meaningLock" class="meaning-lock"><span class="lock-icon">◇</span><div><strong>Meaning Lock</strong><small id="lockSummary">Requirements are checked with lightweight rules.</small></div><span id="lockBadge" class="lock-badge">ENABLED</span></div>
         </section>
       </div>
       <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>

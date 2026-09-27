@@ -6,7 +6,7 @@ import from pathlib { Path }
 import from fastapi { FastAPI, Request, HTTPException }
 import from fastapi.responses { FileResponse, JSONResponse }
 import from fastapi.staticfiles { StaticFiles }
-import from engine { compile_prompt }
+import from engine { compile_prompt, compile_document_markdown }
 import from documents { extract_document, document_to_markdown }
 import from extension_api { extension_request_allowed, review_draft }
 
@@ -42,7 +42,6 @@ def health() -> dict {
 @app.post("/api/compile")
 async def compile_api(request: Request) -> dict {
     try {
-        document = [];
         if "application/json" in request.headers.get("content-type", "") {
             body = await request.json();
             if not isinstance(body, dict) { raise ValueError("Expected a JSON object."); }
@@ -55,13 +54,17 @@ async def compile_api(request: Request) -> dict {
             upload = form.get("document");
             if upload and hasattr(upload, "read") {
                 data = await upload.read(4000001);
-                document = await asyncio.to_thread(extract_document, data, upload.filename or "");
+                filename = upload.filename or "document.pdf";
+                chunks = await asyncio.to_thread(extract_document, data, filename);
+                markdown = await asyncio.to_thread(document_to_markdown, data, filename, chunks);
                 await upload.close();
+                plain_text = "\n\n".join([str(chunk["text"]) for chunk in chunks]);
+                return compile_document_markdown(plain_text, markdown, filename);
             }
         }
         if not isinstance(prompt, str) { raise ValueError("Prompt must be text."); }
         if isinstance(budget, bool) or not re_integer(str(budget)) { raise ValueError("Token target must be a whole number."); }
-        return await asyncio.to_thread(compile_prompt, prompt, int(budget), document);
+        return await asyncio.to_thread(compile_prompt, prompt, int(budget));
     } except ValueError as error {
         raise HTTPException(status_code=422, detail=str(error));
     } except HTTPException { raise; }
@@ -99,10 +102,13 @@ async def extension_document(request: Request) -> dict {
         upload = form.get("document");
         if not upload or not hasattr(upload, "read") { raise ValueError("Choose a PDF, TXT, or Markdown file."); }
         data = await upload.read(4000001);
-        markdown = await asyncio.to_thread(document_to_markdown, data, upload.filename or "document.pdf");
         filename = upload.filename or "document.pdf";
+        chunks = await asyncio.to_thread(extract_document, data, filename);
+        markdown = await asyncio.to_thread(document_to_markdown, data, filename, chunks);
         await upload.close();
-        return {"protocol": 1, "filename": filename, "markdown": markdown, "characters": len(markdown)};
+        plain_text = "\n\n".join([str(chunk["text"]) for chunk in chunks]);
+        result = compile_document_markdown(plain_text, markdown, filename);
+        return {"protocol": 1, "filename": filename, "markdown": markdown, "metrics": result["metrics"]};
     } except ValueError as failure { raise HTTPException(status_code=422, detail=str(failure)); }
 }
 
