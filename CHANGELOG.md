@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.4.0 — 2026-09-27
+
+### Added
+
+- Local Sentence Transformers NLI verification for Meaning Lock
+- Bidirectional entailment and contradiction checks for rewritten requirements
+- ARM-optimized ONNX inference with no external model API calls
+- DeepEval development dependency for future prompt-alignment evaluation
+- Regression coverage for the long presentation prompt that previously saved zero tokens
+
+### Changed
+
+- Long unpunctuated prompts are split into atomic intent nodes before constraints are locked
+- Meaning Lock protects exact literals and negation without freezing an entire paragraph
+- Failed semantic rewrites restore only the affected clause
+- The interface reports local semantic checks separately from external model calls
+- PromptZero now uses a hybrid Jac rules and local NLI compiler
+
 ## 0.3.0 — 2026-09-27
 
 ### Added

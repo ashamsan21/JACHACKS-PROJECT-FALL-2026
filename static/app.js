@@ -82,11 +82,11 @@ function render() {
   $('resultStatus').textContent = 'Compilation complete';
   $('resultStatus').className = 'status success';
   const verified = result.locks.filter(lock => lock.passed).length;
-  $('lockSummary').textContent = result.locks.length ? `${verified} of ${result.locks.length} detected clauses verified verbatim.` : 'No explicit constraints detected. Review the output.';
+  $('lockSummary').textContent = result.locks.length ? `${verified} of ${result.locks.length} detected clauses passed Meaning Lock.` : 'No explicit constraints detected. Review the output.';
   $('lockBadge').textContent = result.lock_ok ? (verified ? 'VERIFIED' : 'NO LOCKS') : 'RESTORED';
   $('nodeCount').textContent = result.graph.nodes.length;
   $('analysisMeta').textContent = `${result.graph.nodes.length} NODES · ${result.graph.edges.length} EDGES · ${result.duration_ms} ms`;
-  $('footerStatus').textContent = `${result.trace.length} walkers executed · ${m.model_calls} model calls · no prompts stored`;
+  $('footerStatus').textContent = `${result.trace.length} walkers executed · ${m.local_semantic_checks || 0} local semantic checks · 0 external model calls`;
   if (!m.within_budget) notify(`Estimated context is ${fmt(m.after)} tokens, above your ${fmt(m.budget)} target. Protected requirements were retained.`);
   else if (result.context_note) notify(result.context_note);
   renderInsights();

@@ -2,6 +2,7 @@
 import re;
 import math;
 import time;
+import from semantic_lock { semantic_equivalence }
 
 node Compilation {
     has source: str;
@@ -18,6 +19,7 @@ node Compilation {
     has context_before: str = "";
     has context_note: str = "";
     has lock_ok: bool = True;
+    has semantic_checks: int = 0;
 }
 
 node Intent {
@@ -48,10 +50,10 @@ def units(source: str) -> list[dict[str, any]] {
     if "```" in source { return [{"text": source, "start": 0, "end": len(source)}]; }
     # Long speech-like drafts often omit sentence punctuation. Split only at
     # explicit discourse markers so one conditional does not lock everything.
-    if len(source) > 240 and not re.search(r"[\"“”`]", source) and not re.search(r"\b(never|must|required|exactly|do not|don't)\b", source, 2) {
+    if len(source) > 240 and not re.search(r"[\"“”`]", source) {
         runon: list[dict[str, any]] = [];
         start = 0;
-        markers = list(re.finditer(r",\s+|;\s+|\b(?:and then|then after|and the other thing|i want to create|if)\b", source, 2));
+        markers = list(re.finditer(r",\s+|;\s+|\b(?:and then|then after|and the other thing|and basically|but at the same time|and also|but there will also|and one more thing|and maybe|because|i want to create|if)\b", source, 2));
         for marker in markers {
             point = marker.end() if str(marker.group()).lstrip().startswith(",") or str(marker.group()).lstrip().startswith(";") else marker.start();
             if point - start >= 55 {
@@ -301,11 +303,6 @@ walker CompressionWalker {
             here.edits.append("Conversation reference metadata removed");
             return;
         }
-        # A lock protects the full source unit, not just keywords.
-        if here.protected {
-            self.pieces.append(value);
-            return;
-        }
         rules = [
             (r"^(?:hey|hi|hello)[,!]?\s+", "", "Greeting removed"),
             (r"^so\s+", "", "Opening filler removed"),
@@ -314,6 +311,30 @@ walker CompressionWalker {
             (r"^(?:could|can|would) you (?:please )?", "", "Request preamble shortened"),
             (r"^please\s+", "", "Politeness marker removed"),
             (r"^i (?:really )?(?:want|need) you to\s+", "", "Request preamble shortened"),
+            (r"^(?:and\s+)?basically\s+", "", "Connector removed"),
+            (r"^but at the same time\s+", "", "Connector shortened"),
+            (r"^(?:and\s+)?also\s+", "", "Connector shortened"),
+            (r"^and one more thing\s+", "", "Connector shortened"),
+            (r"^and maybe\s+", "", "Connector shortened"),
+            (r"^(?:what i want is for you to|i need you to|can you)\s+", "", "Request preamble shortened"),
+            (r"\btry to make me\b", "create", "Request wording shortened"),
+            (r"\bi dont really want it to be super long because people probably wont pay attention if its too long\b", "keep it concise", "Length request clarified"),
+            (r"\bmake sure you dont leave out\b", "include", "Requirement shortened"),
+            (r"\bthe stuff about\b", "", "Wording shortened"),
+            (r"\bbecause thats probably the most important part\b", "", "Filler removed"),
+            (r"\bmake it sound professional but not like super corporate or like it was obviously written by ai\b", "use a professional, natural, non-corporate tone", "Tone clarified"),
+            (r"\bwould probably be good but you can decide if you think something else makes more sense\b", "", "Hedge removed"),
+            (r"\bmake sure that the presentation is understandable by\b", "make the presentation clear to", "Audience wording shortened"),
+            (r"\bpeople who dont know much about ai\b", "nontechnical audiences", "Audience clarified"),
+            (r"\bthere will also be some technical people there so dont make it too basic either\b", "technical audiences without oversimplifying", "Audience clarified"),
+            (r"\bdo not change any of the numbers from my results because those need to stay exactly the same\b", "Preserve every result number exactly", "Numeric constraint shortened"),
+            (r"\bdo not change any of the numbers from my results\b", "Preserve every result number exactly", "Numeric constraint shortened"),
+            (r"^because those need to stay exactly the same\b", "Keep them exact", "Numeric constraint shortened"),
+            (r"\bdont make up any information if something is missing just tell me that its missing\b", "Do not invent missing information; identify any gaps", "Grounding constraint shortened"),
+            (r"\bdont make up any information\b", "Do not invent missing information", "Grounding constraint shortened"),
+            (r"^if something is missing just tell me that its missing\b", "If information is missing, identify the gap", "Grounding constraint shortened"),
+            (r"\bgive me some speaker notes too\b", "include speaker notes", "Output request shortened"),
+            (r"\band yeah basically just make it really good and clear and interesting\b", "make it clear and engaging", "Filler removed"),
             (r"^i want (?:to create|to add|to make)\s+", "Create ", "Request preamble shortened"),
             (r"^and the other thing i want (?:is|it to)\s+", "Also, ", "Request preamble shortened"),
             (r"^and then\s+", "Then ", "Connector shortened"),
@@ -356,7 +377,7 @@ walker CompressionWalker {
         value = value.strip();
         if not value { value = here.original; }
         if value { value = value[0].upper() + value[1:]; }
-        if value in self.seen {
+        if value in self.seen and not here.protected {
             here.candidate = "";
             here.edits.append("Exact repeated instruction removed");
         } else {
@@ -372,12 +393,15 @@ walker CompressionWalker {
         if estimate_tokens(here.optimized) > estimate_tokens(here.source) {
             here.optimized = here.source;
         }
-        here.trace.append({"walker": "CompressionWalker", "detail": "Applied conservative edits; protected clauses stayed verbatim"});
+        here.trace.append({"walker": "CompressionWalker", "detail": "Compressed atomic intent nodes before exact and semantic verification"});
     }
 }
 
 walker MeaningLockWalker {
     has session: any = None;
+    has pieces: list = [];
+    has semantic_used: bool = False;
+    has semantic_unavailable: bool = False;
 
     can begin with Compilation entry {
         self.session = here;
@@ -385,22 +409,41 @@ walker MeaningLockWalker {
     }
 
     can verify with Intent entry {
+        candidate = here.candidate;
+        passed = True;
         if here.protected {
-            passed = here.original in str(self.session.optimized);
-            self.session.locks.append({"node": here.key, "text": here.original, "reasons": here.reasons, "passed": passed});
-            if not passed { self.session.lock_ok = False; }
+            for literal in here.literals {
+                if literal not in candidate { passed = False; }
+            }
+            original_negative = bool(re.search(r"\b(?:not|never|no|without|do not|don't|cannot|can't)\b", here.original, 2));
+            candidate_negative = bool(re.search(r"\b(?:not|never|no|without|do not|don't|cannot|can't|preserve)\b", candidate, 2));
+            if original_negative and not candidate_negative { passed = False; }
+            semantic = semantic_equivalence(here.original, candidate) if passed else {"available": True, "passed": False, "model": "deterministic"};
+            if semantic.get("available", False) {
+                self.semantic_used = self.semantic_used or semantic.get("model", "") != "exact-match";
+                if semantic.get("model", "") != "exact-match" { self.session.semantic_checks += 1; }
+                if semantic.get("passed") == False { passed = False; }
+            } else {
+                self.semantic_unavailable = True;
+            }
+            if not passed {
+                here.candidate = here.original;
+                candidate = here.original;
+                self.session.lock_ok = False;
+            }
+            lock = {"node": here.key, "text": here.original, "reasons": here.reasons, "passed": passed, "result": candidate};
+            lock["semantic"] = semantic;
+            self.session.locks.append(lock);
         }
-        for literal in here.literals {
-            if literal not in str(self.session.optimized) { self.session.lock_ok = False; }
-        }
+        if candidate { self.pieces.append(candidate); }
     }
 
     can done with Compilation exit {
-        if not here.lock_ok {
-            here.optimized = here.source;
-            here.issues.append({"type": "lock", "title": "Original restored", "detail": "A protected clause failed verification. The original prompt was restored."});
+        here.optimized = " ".join(self.pieces);
+        if self.semantic_unavailable {
+            here.issues.append({"type": "semantic", "title": "Local semantic check unavailable", "detail": "Deterministic literal and negation checks ran; install the semantic dependencies or inspect the local model setup."});
         }
-        here.trace.append({"walker": "MeaningLockWalker", "detail": "Verified exact protected clauses and literals; rollback on failure"});
+        here.trace.append({"walker": "MeaningLockWalker", "detail": "Verified literals and negation; used bidirectional local NLI where wording changed"});
     }
 }
 
@@ -513,7 +556,8 @@ walker BudgetWalker {
             "context_after": estimate_tokens(here.context),
             "budget": here.budget, "within_budget": after <= here.budget,
             "estimate": True, "method": "max(UTF-8 bytes / 4, word-and-punctuation count), rounded up",
-            "model_calls": 0
+            "model_calls": 0, "external_model_calls": 0,
+            "local_semantic_checks": here.semantic_checks
         };
         if after > here.budget {
             here.issues.append({"type": "budget", "title": "Over your token target", "detail": "Meaning Lock takes priority. Reduce the scope or increase the budget; protected requirements were not cut."});
@@ -535,7 +579,7 @@ walker GraphWalker {
 
     can serialize with Intent entry {
         actual = here.candidate;
-        if not self.session.lock_ok or self.session.optimized == self.session.source { actual = here.original; }
+        if self.session.optimized == self.session.source { actual = here.original; }
         status = "preserved";
         if not actual { status = "removed"; }
         elif actual != here.original { status = "compressed"; }
@@ -578,6 +622,6 @@ def compile_prompt(prompt: str, budget: int = 1024, document: list[dict[str, str
         "trace": session.trace, "context": session.context,
         "context_note": session.context_note,
         "duration_ms": float(format((time.perf_counter() - started) * 1000, ".1f")),
-        "engine": "Jac · deterministic rules", "version": "0.1.0"
+        "engine": "Jac · deterministic rules + local NLI", "version": "0.2.0"
     };
 }

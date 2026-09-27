@@ -1,7 +1,9 @@
-.venv/
+.venv
 .jac/
 __pycache__/
 *.pyc
 .DS_Store
 .env
 .pytest_cache/
+.cache/
+:memory:.ses
