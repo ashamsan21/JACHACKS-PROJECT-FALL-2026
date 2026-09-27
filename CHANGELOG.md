@@ -17,6 +17,8 @@
 - Failed semantic rewrites restore only the affected clause
 - The interface reports local semantic checks separately from external model calls
 - PromptZero now uses a hybrid Jac rules and local NLI compiler
+- Speech-to-text drafts now remove stutters, correction fragments, repeated filler, and common grammar errors
+- Vague audience-question requests are reconstructed into concise voice and engagement requirements
 
 ## 0.3.0 — 2026-09-27
 

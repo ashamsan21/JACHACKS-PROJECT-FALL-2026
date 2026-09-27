@@ -41,6 +41,17 @@ test "presentation run-on is atomized and compressed" {
     assert "speaker notes" in result["optimized"];
 }
 
+test "speech transcript stutters and vague filler are reconstructed" {
+    source = "No, no, not like that's. I want something like to be kinda good questions that I ask... That the viewer wo- would- would like to have an answers to Just be like me, like be viral like that";
+    result = compile_prompt(source);
+    assert result["metrics"]["after"] < result["metrics"]["before"];
+    assert "engaging questions" in result["optimized"].lower();
+    assert "viewers want answered" in result["optimized"].lower();
+    assert "match my voice" in result["optimized"].lower();
+    assert "shareable" in result["optimized"].lower();
+    assert "would- would" not in result["optimized"].lower();
+}
+
 test "conversation metadata is removed and project specs are compacted" {
     source = "[Planning](chatgpt-conversation://abc-123): Build a tool using Jac with at least 40% of the project in Jac. Build the first end-to-end vertical slice: input -> analysis -> output. Make the UI polished and dark developer-tool styled. Do not fake functionality.";
     result = compile_prompt(source);

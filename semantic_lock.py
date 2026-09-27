@@ -16,11 +16,31 @@ def _model():
     return CrossEncoder(
         MODEL_NAME,
         backend="onnx",
+        local_files_only=True,
         model_kwargs={
             "file_name": "onnx/model_qint8_arm64.onnx",
             "provider": "CPUExecutionProvider",
         },
     )
+
+
+def prepare_model() -> None:
+    """Download the local verifier during setup, never during compilation."""
+    from sentence_transformers import CrossEncoder
+
+    CrossEncoder(
+        MODEL_NAME,
+        backend="onnx",
+        local_files_only=False,
+        model_kwargs={
+            "file_name": "onnx/model_qint8_arm64.onnx",
+            "provider": "CPUExecutionProvider",
+        },
+    )
+
+
+if __name__ == "__main__":
+    prepare_model()
 
 
 def _probabilities(scores) -> list[float]:

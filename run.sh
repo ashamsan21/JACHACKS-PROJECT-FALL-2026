@@ -7,5 +7,6 @@ if [ ! -x .venv/bin/jac ]; then
   "$python_bin" -c 'import sys; assert sys.version_info >= (3,12), "Python 3.12+ is required. Set PYTHON=/path/to/python3.12"'
   "$python_bin" -m venv .venv
   .venv/bin/python -m pip install -r requirements.lock
+  .venv/bin/python semantic_lock.py
 fi
 exec .venv/bin/jac run main.jac

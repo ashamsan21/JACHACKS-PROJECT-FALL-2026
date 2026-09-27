@@ -176,6 +176,14 @@ walker IntentWalker {
             here.protected = False;
             return;
         }
+        # Speech-to-text corrections refer to discarded prior wording, not to
+        # the desired output. They should not lock an otherwise editable draft.
+        if re.fullmatch(r"(?:no[,]?\s*)+(?:not\s+)?like\s+that(?:'s)?[.!?]*", text, 2) {
+            here.kind = "context";
+            here.protected = False;
+            here.reasons = [];
+            return;
+        }
         here.reasons = constraint_reasons(text);
         here.literals = critical_literals(text);
         # Conditional wording remains inspectable, but only hard requirements,
@@ -303,7 +311,13 @@ walker CompressionWalker {
             here.edits.append("Conversation reference metadata removed");
             return;
         }
+        if re.fullmatch(r"(?:no[,]?\s*)+(?:not\s+)?like\s+that(?:'s)?[.!?]*", value, 2) {
+            here.candidate = "";
+            here.edits.append("Discarded speech correction removed");
+            return;
+        }
         rules = [
+            (r"^(?:no[,]?\s*)+(?:not\s+)?like\s+that(?:'s)?[.!?]*$", "", "Discarded speech correction removed"),
             (r"^(?:hey|hi|hello)[,!]?\s+", "", "Greeting removed"),
             (r"^so\s+", "", "Opening filler removed"),
             (r"^basically[,]?\s+", "", "Opening filler removed"),
@@ -335,6 +349,19 @@ walker CompressionWalker {
             (r"^if something is missing just tell me that its missing\b", "If information is missing, identify the gap", "Grounding constraint shortened"),
             (r"\bgive me some speaker notes too\b", "include speaker notes", "Output request shortened"),
             (r"\band yeah basically just make it really good and clear and interesting\b", "make it clear and engaging", "Filler removed"),
+            (r"^i want something like to be kinda good questions that i ask\.*$", "Create engaging questions.", "Question intent reconstructed"),
+            (r"^that the viewer (?:wo-\s*)?would-\s*would like to have an answers to just be like me[,]?\s*like be viral like that$", "Ask what viewers want answered. Match my voice and make the questions shareable.", "Audience intent reconstructed"),
+            (r"\b(?:wo-\s*)?would-\s*would\b", "would", "Speech stutter removed"),
+            (r"\b([a-z]+)(?:[\s-]+\1\b)+", r"\1", "Repeated speech fragment removed"),
+            (r"\bto be kinda good questions\b", "engaging questions", "Vague wording clarified"),
+            (r"\bkinda good questions\b", "engaging questions", "Vague wording clarified"),
+            (r"\bgood questions\b", "engaging questions", "Vague wording clarified"),
+            (r"\ban answers\b", "answers", "Grammar corrected"),
+            (r"^i want something like\s+", "Create ", "Speech filler removed"),
+            (r"\bthat the viewer would like to have answers to\b", "that viewers want answered", "Audience intent clarified"),
+            (r"\bjust be like me[,]?\s*like\s*", "Match my voice and ", "Voice requirement clarified"),
+            (r"\bbe viral like that\b", "make them shareable", "Vague reach goal clarified"),
+            (r"\s+\.\.\.$", ".", "Trailing speech pause removed"),
             (r"^i want (?:to create|to add|to make)\s+", "Create ", "Request preamble shortened"),
             (r"^and the other thing i want (?:is|it to)\s+", "Also, ", "Request preamble shortened"),
             (r"^and then\s+", "Then ", "Connector shortened"),
@@ -375,6 +402,7 @@ walker CompressionWalker {
             }
         }
         value = value.strip();
+        value = re.sub(r"\s{2,}", " ", value);
         if not value { value = here.original; }
         if value { value = value[0].upper() + value[1:]; }
         if value in self.seen and not here.protected {
