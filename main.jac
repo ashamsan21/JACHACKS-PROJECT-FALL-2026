@@ -8,7 +8,7 @@ import from fastapi.responses { FileResponse, JSONResponse }
 import from fastapi.staticfiles { StaticFiles }
 import from engine { compile_prompt, compile_document_markdown }
 import from documents { extract_document, document_to_markdown }
-import from extension_api { extension_request_allowed, review_draft }
+import from extension_api { extension_request_allowed, review_draft, vocabulary_suggestions }
 
 glob app = FastAPI(title="PromptZero", version="0.1.0", docs_url=None, redoc_url=None);
 glob static_dir = Path(str(__file__)).parent / "static";
@@ -64,7 +64,9 @@ async def compile_api(request: Request) -> dict {
         }
         if not isinstance(prompt, str) { raise ValueError("Prompt must be text."); }
         if isinstance(budget, bool) or not re_integer(str(budget)) { raise ValueError("Token target must be a whole number."); }
-        return await asyncio.to_thread(compile_prompt, prompt, int(budget));
+        result = await asyncio.to_thread(compile_prompt, prompt, int(budget));
+        result["vocabulary"] = vocabulary_suggestions(prompt);
+        return result;
     } except ValueError as error {
         raise HTTPException(status_code=422, detail=str(error));
     } except HTTPException { raise; }

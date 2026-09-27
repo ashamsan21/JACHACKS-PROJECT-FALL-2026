@@ -192,6 +192,10 @@ test "HTTP JSON multipart validation and same origin" {
     response = client.post("/api/compile", json={"prompt": "Please explain gravity."});
     assert response.status_code == 200;
     assert response.json()["optimized"] == "Explain gravity.";
+    response = client.post("/api/compile", json={"prompt": "Make the camera slowly get closer to his face."});
+    assert response.status_code == 200;
+    assert response.json()["optimized"] == "Use a slow dolly-in toward his face.";
+    assert response.json()["vocabulary"][0]["term"] == "dolly-in";
     response = client.post("/api/compile", data={"prompt": "", "budget": "256"}, files={"document": ("notes.txt", b"Photosynthesis uses sunlight.", "text/plain")});
     assert response.status_code == 200;
     assert response.json()["mode"] == "document";

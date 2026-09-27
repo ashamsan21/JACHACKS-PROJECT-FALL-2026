@@ -544,7 +544,7 @@ def compile_document_markdown(source_text: str, markdown: str, filename: str) ->
     output_filename = filename.rsplit(".", 1)[0] + ".md";
     return {
         "mode": "document", "original": source_text, "optimized": markdown,
-        "compiled": markdown, "filename": output_filename,
+        "compiled": markdown, "filename": output_filename, "vocabulary": [],
         "issues": [], "locks": [], "lock_ok": True,
         "context": "", "context_note": "",
         "metrics": {

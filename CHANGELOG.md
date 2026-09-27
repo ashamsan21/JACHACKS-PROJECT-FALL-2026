@@ -9,6 +9,7 @@
 - PDF conversion creates a downloadable `.md` file named after the source document
 - Prompt cleanup uses lightweight Jac rules without a language model or per-clause inference
 - Informal camera movement such as “get closer” is rewritten with precise filmmaking vocabulary
+- Camera vocabulary suggestions are connected to both the main web app and browser extension
 - PDF conversion no longer selects excerpts, interprets the prompt, or removes document sections
 
 ### Removed

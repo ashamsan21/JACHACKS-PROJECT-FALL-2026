@@ -85,6 +85,7 @@ function render() {
   $('meaningLock').hidden = documentMode;
   $('insights').hidden = documentMode;
   $('analysis').hidden = documentMode;
+  renderVocabulary(documentMode ? [] : (result.vocabulary || []));
   $('contextPreview').hidden = !result.context;
   $('contextPreview').textContent = result.context ? `ATTACHED CONTEXT\n${result.context}\n\n${result.context_note}` : '';
   $('copy').disabled = false;
@@ -102,6 +103,16 @@ function render() {
   renderGraph();
   renderDiff();
   $('traceView').innerHTML = `<p class="muted">Executed by the Jac runtime for this compilation. Total: ${result.duration_ms} ms.</p>` + result.trace.map((item, i) => `<div class="trace-row"><span class="trace-index">${String(i + 1).padStart(2,'0')} ✓</span><div><strong>${escapeHTML(item.walker)}</strong><small>${escapeHTML(item.detail)}</small></div></div>`).join('');
+}
+
+function renderVocabulary(items) {
+  $('vocabulary').hidden = !items.length;
+  $('vocabularyItems').replaceChildren(...items.slice(0, 5).map(item => {
+    const card = document.createElement('div'); card.className = 'vocabulary-item';
+    const term = document.createElement('strong'); term.textContent = item.term;
+    const meaning = document.createElement('small'); meaning.textContent = item.meaning;
+    card.append(term, meaning); return card;
+  }));
 }
 
 function renderInsights() {
@@ -176,6 +187,7 @@ $('clear').addEventListener('click', () => {
   $('resultStatus').textContent = 'Ready to compile'; $('resultStatus').className = 'status';
   $('lockSummary').textContent = 'Requirements are verified locally or restored.'; $('lockBadge').textContent = 'ENABLED';
   $('download').hidden = true;
+  $('vocabulary').hidden = true; $('vocabularyItems').replaceChildren();
   $('contextPreview').hidden = true; $('insights').innerHTML = ''; $('nodeCount').textContent = '0';
   $('graphCanvas').innerHTML = '<div class="empty-state">Your intent, made visible.<small>Compile a prompt to explore its graph.</small></div>';
   $('inspector').innerHTML = '<span class="tiny-label">NODE INSPECTOR</span><p>Select a node after compilation.</p>';
