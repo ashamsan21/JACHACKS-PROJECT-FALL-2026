@@ -82,7 +82,7 @@ function render() {
   $('resultStatus').textContent = 'Compilation complete';
   $('resultStatus').className = 'status success';
   const verified = result.locks.filter(lock => lock.passed).length;
-  $('lockSummary').textContent = result.locks.length ? `${verified} of ${result.locks.length} detected clauses passed Meaning Lock.` : 'No explicit constraints detected. Review the output.';
+  $('lockSummary').textContent = result.locks.length ? `${verified} rewritten safely · ${result.locks.length - verified} restored to original wording.` : 'No explicit constraints detected. Review the output.';
   $('lockBadge').textContent = result.lock_ok ? (verified ? 'VERIFIED' : 'NO LOCKS') : 'RESTORED';
   $('nodeCount').textContent = result.graph.nodes.length;
   $('analysisMeta').textContent = `${result.graph.nodes.length} NODES · ${result.graph.edges.length} EDGES · ${result.duration_ms} ms`;
@@ -165,7 +165,7 @@ $('clear').addEventListener('click', () => {
   $('before').textContent = $('after').textContent = $('percent').textContent = '—';
   $('saved').textContent = 'tokens saved'; $('optimized').textContent = 'Your compiled prompt will appear here.';
   $('resultStatus').textContent = 'Ready to compile'; $('resultStatus').className = 'status';
-  $('lockSummary').textContent = 'Detected requirements are kept verbatim.'; $('lockBadge').textContent = 'ENABLED';
+  $('lockSummary').textContent = 'Requirements are verified locally or restored.'; $('lockBadge').textContent = 'ENABLED';
   $('contextPreview').hidden = true; $('insights').innerHTML = ''; $('nodeCount').textContent = '0';
   $('graphCanvas').innerHTML = '<div class="empty-state">Your intent, made visible.<small>Compile a prompt to explore its graph.</small></div>';
   $('inspector').innerHTML = '<span class="tiny-label">NODE INSPECTOR</span><p>Select a node after compilation.</p>';
