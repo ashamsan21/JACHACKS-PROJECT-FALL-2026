@@ -1,0 +1,6 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>PromptZero extension test fixture</title>
+<style>body{background:#172026;color:#d7e2eb;font:16px/1.6 system-ui;padding:30px;max-width:700px}button,select{padding:10px;margin:8px;color:inherit;background:#263d32;border:1px solid #779386;border-radius:7px}#prompt-textarea{display:block;background:#10161b;color:#fff;padding:20px;width:90%;min-height:150px;border:1px solid #65736c;margin:20px 0}small{color:#a2b3c0}</style>
+<h1>Extension test fixture</h1><p>This is a local editor fixture, not ChatGPT. It runs the actual extension panel and the real Jac backend; only the browser messaging bridge is simulated.</p>
+<label>Editor type <select id="mode"><option value="rich">Rich text</option><option value="textarea">Textarea</option></select></label><button id="open">Open PromptZero</button><button id="navigate">Simulate conversation change</button>
+<form id="composer"><div id="editor-slot"></div><button type="submit">Send (fixture only)</button></form><p id="sent">Messages submitted: 0</p><p id="inputs">Editor input events: 0</p>
+<script src="/fixture.js"></script></html>

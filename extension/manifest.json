@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "PromptZero — AI Prompt Copilot",
+  "version": "0.3.0",
+  "description": "Fix wording, convert PDFs to Markdown, suggest precise vocabulary, and show estimated token savings. Never auto-sends.",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["http://127.0.0.1/*"],
+  "background": {"service_worker": "worker.js"},
+  "action": {"default_title": "Review this ChatGPT draft with PromptZero"}
+}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PromptZero — Context compiler</title>
+  <meta name="description" content="A Jac-powered context compiler. Clearer prompts, inspectable intent, protected requirements.">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="PromptZero home"><span class="brand-mark">p<span>∅</span></span><span>PromptZero<small>CONTEXT COMPILER</small></span></a>
+    <div class="workspace-label">WORKSPACE <span>01</span></div>
+    <a class="nav active" href="#workspace"><span>⌘</span> Compiler <span class="nav-key">1</span></a>
+    <a class="nav" href="#analysis"><span>◇</span> Intent explorer</a>
+    <div class="sidebar-note"><span class="tiny-label">THE PRINCIPLE</span><p>Less noise.<br>Same intention.</p><div class="mini-line"></div><small>Every edit leaves a trace.<br>Every detected constraint stays.</small></div>
+    <div class="runtime"><span class="runtime-icon">J</span><div>Powered by Jac<small>Graph-native analysis</small></div><span class="live-dot" id="healthDot"></span></div>
+    <div class="sidebar-footer">LOCAL EDITION <span>v0.3</span></div>
+  </aside>
+  <div class="app-shell">
+    <header class="topbar"><div><span class="muted">Workspace</span><span class="slash">/</span>Context compiler</div><div class="top-meta"><span class="local-pill">LOCAL · NO MODEL CALLS</span></div></header>
+    <main id="workspace">
+      <div class="page-heading"><div><div class="eyebrow">MAKE EVERY TOKEN COUNT</div><h1>Say less. <span>Get more.</span></h1><p>Turn a messy prompt into a clear, inspectable instruction.</p></div><div class="mode-badge"><span class="spark">✳</span><div>Deterministic compiler<small>Rule-based · no API key needed</small></div></div></div>
+      <div class="workspace-toolbar"><div class="section-kicker"><span class="small-square"></span> COMPILER <span class="subtle">/ NEW COMPILATION</span></div></div>
+      <div class="editor-grid">
+        <section class="panel input-panel" aria-labelledby="inputHeading">
+          <div class="panel-header"><h2 id="inputHeading"><span class="step">01</span> Your context</h2><button id="clear" class="text-button">Clear</button></div>
+          <div class="editor-label"><label for="prompt">PROMPT</label><span>Plain language in</span></div>
+          <textarea id="prompt" spellcheck="false" maxlength="20000" placeholder="What do you want AI to do? Paste your prompt here…"></textarea>
+          <div class="editor-footer"><span id="charCount">0 characters</span><span>20,000 max</span></div>
+          <div class="attachment-row"><button id="attach" class="upload" type="button" aria-label="Attach document"><span class="attach-icon">＋</span><span id="fileLabel">Attach context <small>PDF, TXT, MD · up to 4 MB</small></span><span class="upload-arrow">↥</span></button><input id="document" type="file" accept=".pdf,.txt,.md" hidden><button id="removeFile" class="text-button" hidden aria-label="Remove attachment">×</button></div>
+          <div class="compile-controls"><button id="compile" class="primary"><span id="compileIcon">✳</span> <span id="compileText">Compile context</span> <kbd>⌘ ↵</kbd></button></div>
+        </section>
+        <section class="panel output-panel" aria-labelledby="outputHeading">
+          <div class="panel-header"><h2 id="outputHeading"><span class="step accent">02</span> Compiled context</h2><span id="resultStatus" class="status">Ready to compile</span></div>
+          <div class="token-comparison"><div><span class="tiny-label">BEFORE <em>EST.</em></span><strong id="before">—</strong><small>input tokens</small></div><span class="comparison-arrow">⟶</span><div><span class="tiny-label">AFTER <em>EST.</em></span><strong id="after">—</strong><small>output context tokens</small></div><div class="savings"><span id="percent">—</span><small id="saved">tokens saved</small></div></div>
+          <div class="output-label"><span class="tiny-label">OPTIMIZED PROMPT</span><button id="copy" class="text-button" disabled>▣ Copy context</button></div>
+          <div id="optimized" class="optimized" tabindex="0">Your compiled prompt will appear here after you enter your own text.</div>
+          <div id="contextPreview" class="context-preview" hidden></div>
+          <div class="meaning-lock"><span class="lock-icon">◇</span><div><strong>Meaning Lock</strong><small id="lockSummary">Detected requirements are kept verbatim.</small></div><span id="lockBadge" class="lock-badge">ENABLED</span></div>
+        </section>
+      </div>
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+      <div id="insights" class="insights"></div>
+      <section id="analysis" class="panel analysis-panel">
+        <div class="analysis-header"><div class="tabs" role="tablist" aria-label="Inspect compilation"><button class="tab selected" id="graphTab" role="tab" aria-selected="true" aria-controls="graphView" data-view="graph">◇ Intent graph <span id="nodeCount">0</span></button><button class="tab" id="diffTab" role="tab" aria-selected="false" aria-controls="diffView" data-view="diff" tabindex="-1">⇄ Context diff</button><button class="tab" id="traceTab" role="tab" aria-selected="false" aria-controls="traceView" data-view="trace" tabindex="-1">⌁ Walker trace</button></div><span class="analysis-meta" id="analysisMeta">Awaiting compilation</span></div>
+        <div id="graphView" class="graph-view" role="tabpanel" aria-labelledby="graphTab"><div class="graph-main"><div class="graph-legend"><span><i class="goal"></i> Goal</span><span><i class="output"></i> Output</span><span><i class="constraint"></i> Constraint</span><span><i class="context"></i> Context</span></div><div id="graphCanvas" class="graph-canvas"><div class="empty-state">Your intent, made visible.<small>Compile a prompt to explore its graph.</small></div></div><div class="graph-foot"><span>JAC NODES + EDGES</span><span>Select a node to inspect its source ↗</span></div></div><aside id="inspector" class="inspector"><span class="tiny-label">NODE INSPECTOR</span><h3>Nothing hidden.</h3><p>Select a node to see its original wording, detected role, and protection rules.</p></aside></div>
+        <div id="diffView" class="diff-view" role="tabpanel" aria-labelledby="diffTab" hidden><div class="diff-heading"><p>A trace for every source clause.</p><div class="diff-legend"><span>● Preserved</span><span>● Compressed</span><span>● Removed</span></div></div><div id="diffRows" class="diff-rows"><p class="muted">Compile a prompt to see changes.</p></div></div>
+        <div id="traceView" class="trace-view" role="tabpanel" aria-labelledby="traceTab" hidden><p class="muted">Actual Jac walker execution will appear here.</p></div>
+      </section>
+      <footer class="page-footer"><span>Built around intent. Powered by Jac.</span><span id="footerStatus">No prompts stored · no external model requests</span></footer>
+    </main>
+  </div>
+  <div id="toast" role="status" class="toast" hidden></div>
+</body>
+</html>
